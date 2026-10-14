@@ -1,12 +1,17 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { ReferencePage } from "@/components/reference-page";
+import { ToyGuidePage } from "@/components/toy-guide-page";
 
+const title = "Guia de Brinquedos Caseiros | +300 Brinquedos criativos";
+const description = "Mais de 300 brinquedos criativos em PDF e mais de 100 vídeos passo a passo para brincar com o que você já tem em casa. Acesso vitalício por R$10.";
 export const Route = createFileRoute("/")({
-  head: () => ({ meta: [
-    { title: "Cifras Kids | Cantigas infantis com cifras para violão" },
-    { name: "description", content: "100 cantigas infantis com cifras para violão, com bônus de musicalização infantil para a criança começar de forma simples, divertida e progressiva." },
-    { property: "og:title", content: "Cifras Kids | Cantigas infantis com cifras para violão" },
-    { property: "og:description", content: "Material digital com 100 cantigas infantis em cifras, método de iniciação musical, atividades lúdicas e guia simplificado para crianças iniciantes." },
-  ] }),
-  component: ReferencePage,
+  head: () => ({
+    meta: [
+      { title },
+      { name: "description", content: description },
+      { property: "og:title", content: title },
+      { property: "og:description", content: description },
+    ],
+    links: [{ rel: "stylesheet", href: "/reference/toy-guide.css" }],
+  }),
+  component: ToyGuidePage,
 });
