@@ -172,6 +172,10 @@ h1, h2, h3, .font-heading { font-family: var(--font-heading); letter-spacing: 0;
 .bonus-item:nth-child(3n+2) .bonus-icon { background: var(--soft-pink); color: var(--coral); }
 .bonus-item:nth-child(3n) .bonus-icon { background: var(--sunshine); color: var(--ink); }
 @media (max-width: 640px) {
+  .hero-section { padding-top: 24px; padding-bottom: 28px; }
+  .hero-section h1 { font-size: 30px; }
+  .hero-section > p { margin-top: 16px; }
+  .hero-product { max-width: 280px; }
   .section-space { padding-block: 48px; }
   .section-title { font-size: 28px; }
   .site-container { width: calc(100% - 32px); }

@@ -1,11 +1,11 @@
 {
   "source": "Uploaded saved website and Cifras Kids structural reference",
   "capabilities": [
-    {"capability":"Landing page", "source":"Saved website ZIP", "outcome":"Recreate with new toy-focused copy and imagery", "status":"in_progress", "next_action":"Implement and verify page"},
-    {"capability":"Checkout", "source":"Source links under inspection", "outcome":"Preserve confirmed external checkout only", "status":"pending", "next_action":"Inspect source URLs"},
+    {"capability":"Landing page", "source":"Saved website ZIP", "outcome":"Recreated with toy-focused copy and imagery; browser verified", "status":"verified", "next_action":"None"},
+    {"capability":"Checkout", "source":"Source checkout link", "outcome":"Original external URL retained; payment and delivery not tested", "status":"preserved", "next_action":"Owner validates live payment and fulfillment"},
     {"capability":"Database, records and auth", "source":"Static export", "outcome":"No schema or identities detected", "status":"not_applicable", "next_action":"None"},
-    {"capability":"Uploaded media", "source":"Saved website ZIP", "outcome":"Replace as requested with new niche-specific imagery", "status":"in_progress", "next_action":"Generate original images"},
-    {"capability":"Tracking and external scripts", "source":"Static export", "outcome":"Inspect without executing; do not copy unknown tracking credentials", "status":"pending", "next_action":"Inspect bundled source"},
-    {"capability":"Verification and cutover", "source":"New Lovable preview", "outcome":"Verify page and CTA; publication not requested", "status":"pending", "next_action":"Browser checks"}
+    {"capability":"Uploaded media", "source":"Saved website ZIP", "outcome":"Replaced as requested with original niche imagery", "status":"verified", "next_action":"None"},
+    {"capability":"Tracking and external scripts", "source":"Static export: PandaVideo, VisitorAPI, Meta, Google", "outcome":"Not copied to adaptation; original instructional content unavailable in archive and tracking ownership unconfirmed", "status":"pending", "next_action":"Owner supplies approved tracking configuration or video to include"},
+    {"capability":"Verification and cutover", "source":"New Lovable preview", "outcome":"Page, imagery, FAQ and main actions tested; no publication requested", "status":"verified", "next_action":"Publish when requested"}
   ]
 }
