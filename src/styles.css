@@ -185,3 +185,39 @@ h1, h2, h3, .font-heading { font-family: var(--font-heading); letter-spacing: 0;
   html { scroll-behavior: auto; }
   *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
 }
+
+/* Layout presentation inspired by the long-form Cifras Kids section flow.
+   Product copy, offers, assets and checkout remain unchanged. */
+:root { --radius: 0.9rem; --shadow-cta: 0 5px 0 oklch(0.40 0.09 175), 0 10px 24px oklch(0.5 0.1 175 / 14%); }
+body { background: #fff; }
+.site-container { width: min(1040px, calc(100% - 40px)); }
+.hero-section { max-width: 900px; padding-top: 42px; padding-bottom: 60px; }
+.hero-section h1 { max-width: 860px; letter-spacing: -.035em; }
+.hero-section > p { max-width: 650px; }
+.hero-product { width: min(610px, 100%); filter: drop-shadow(0 18px 26px rgba(14, 68, 60, .10)); }
+.section-space { padding-block: 66px; }
+.section-title { max-width: 850px; margin-inline: auto; font-size: clamp(28px, 3.35vw, 40px); letter-spacing: -.025em; }
+.reference-preview-grid { gap: 20px; }
+.reference-preview-card { border-radius: 18px; box-shadow: 0 10px 32px rgba(31, 79, 69, .08); transition: transform .2s ease; }
+.reference-preview-card:hover { transform: translateY(-3px); }
+.reference-preview-card .activity-image { aspect-ratio: 5 / 4; }
+.reference-steps > div { padding: 22px 16px; border-radius: 18px; background: rgba(255,255,255,.62); }
+.reference-feature-grid > div { padding: 25px 20px; border-radius: 18px; border: 1px solid var(--border); background: white; box-shadow: 0 6px 25px rgba(14,68,60,.045); }
+.reference-comparison { gap: 16px; }
+.reference-comparison > div { padding: 26px; background: white; border-radius: 18px; border: 1px solid rgba(0,0,0,.06); }
+.reference-audience > div { padding: 22px; border: 1px solid var(--border); border-radius: 16px; }
+.reference-bonuses { gap: 20px; }
+.reference-bonuses .bonus-item { padding: 22px; border: 1px solid var(--border); border-radius: 18px; background: #fff; box-shadow: 0 6px 24px rgba(14,68,60,.04); }
+.reference-offer-card { border-radius: 22px; box-shadow: 0 22px 65px rgba(19, 91, 80, .15); }
+.reference-offer-card > div:first-child { letter-spacing: .035em; }
+.cta { border-radius: 12px; }
+@media(max-width:640px) {
+ .site-container { width: calc(100% - 30px); }
+ .hero-section { padding-top: 26px; padding-bottom: 38px; }
+ .hero-section h1 { font-size: 31px; }
+ .hero-product { max-width: 360px; }
+ .section-space { padding-block: 46px; }
+ .section-title { font-size: 28px; }
+ .reference-preview-grid { gap: 16px; }
+ .reference-comparison > div, .reference-audience > div, .reference-bonuses .bonus-item { padding: 18px; }
+}
