@@ -1,0 +1,11 @@
+{
+  "source": "Uploaded saved website and Cifras Kids structural reference",
+  "capabilities": [
+    {"capability":"Landing page", "source":"Saved website ZIP", "outcome":"Recreate with new toy-focused copy and imagery", "status":"in_progress", "next_action":"Implement and verify page"},
+    {"capability":"Checkout", "source":"Source links under inspection", "outcome":"Preserve confirmed external checkout only", "status":"pending", "next_action":"Inspect source URLs"},
+    {"capability":"Database, records and auth", "source":"Static export", "outcome":"No schema or identities detected", "status":"not_applicable", "next_action":"None"},
+    {"capability":"Uploaded media", "source":"Saved website ZIP", "outcome":"Replace as requested with new niche-specific imagery", "status":"in_progress", "next_action":"Generate original images"},
+    {"capability":"Tracking and external scripts", "source":"Static export", "outcome":"Inspect without executing; do not copy unknown tracking credentials", "status":"pending", "next_action":"Inspect bundled source"},
+    {"capability":"Verification and cutover", "source":"New Lovable preview", "outcome":"Verify page and CTA; publication not requested", "status":"pending", "next_action":"Browser checks"}
+  ]
+}
