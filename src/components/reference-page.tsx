@@ -10,7 +10,8 @@ export function ReferencePage() {
   useEffect(() => {
     let cancelled = false;
     let unmount: (() => void) | undefined;
-    const moduleUrl = "/reference/site.js";
+    // Absolute URL so Vite's dev server doesn't add "?import" and try to transform a /public file.
+    const moduleUrl = new URL("/reference/site.js", window.location.origin).href;
     import(/* @vite-ignore */ moduleUrl)
       .then((module) => {
         if (!cancelled && container.current) {
