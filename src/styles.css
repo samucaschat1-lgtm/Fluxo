@@ -221,3 +221,15 @@ body { background: #fff; }
  .reference-preview-grid { gap: 16px; }
  .reference-comparison > div, .reference-audience > div, .reference-bonuses .bonus-item { padding: 18px; }
 }
+
+/* Cifras Kids reference pass: compact, centered sales-page rhythm.
+   Preserves every existing string, asset, tracking config and checkout. */
+.hero-section { max-width: 890px; padding-top: 22px; }
+.hero-section h1 { max-width: 850px; font-size: clamp(30px, 4vw, 43px); line-height: 1.14; font-weight: 800; }
+.hero-section > p { max-width: 720px; font-size: 17px; }
+.hero-product { max-width: 590px; }
+.section-space { padding-block: 54px; }
+.section-title { line-height: 1.16; }
+.reference-preview-grid, .reference-bonuses { max-width: 970px; margin-inline: auto; }
+.reference-offer-card { max-width: 500px; }
+@media(max-width:640px) { .hero-section { padding-top: 18px; } .hero-section h1 { font-size: 27px; } .hero-section > p { font-size: 14px; } .hero-product { max-width: 315px; } .section-space { padding-block: 38px; } }
