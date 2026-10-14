@@ -1,116 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
-import { ArrowRight, BadgeCheck, BookOpen, Check, ChevronRight, Download, Gift, Heart, Lightbulb, LockKeyhole, Mail, Palette, Recycle, Scissors, ShieldCheck, Smartphone, Sparkles, WandSparkles, X } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { ProductCTA } from "@/components/product-cta";
-import { activities, bonuses, offer } from "@/lib/product";
-import guide from "@/assets/toy-guide.png";
+import { ReferencePage } from "@/components/reference-page";
 
-const description = "Mais de 300 ideias de brinquedos criativos com materiais que você já tem em casa. Transforme coisas simples em momentos de conexão e descobertas.";
 export const Route = createFileRoute("/")({
   head: () => ({ meta: [
-    { title: "+300 Brinquedos Criativos | Mundo Pequeno Gênio" },
-    { name: "description", content: description },
-    { property: "og:title", content: "+300 Brinquedos Criativos — diversão começa em casa" },
-    { property: "og:description", content: description },
-    { property: "og:type", content: "website" },
-    { name: "twitter:card", content: "summary_large_image" },
+    { title: "Cifras Kids | Cantigas infantis com cifras para violão" },
+    { name: "description", content: "100 cantigas infantis com cifras para violão, com bônus de musicalização infantil para a criança começar de forma simples, divertida e progressiva." },
+    { property: "og:title", content: "Cifras Kids | Cantigas infantis com cifras para violão" },
+    { property: "og:description", content: "Material digital com 100 cantigas infantis em cifras, método de iniciação musical, atividades lúdicas e guia simplificado para crianças iniciantes." },
   ] }),
-  component: Index,
+  component: ReferencePage,
 });
-
-const features = [
-  { icon: Recycle, title: "O que você já tem", text: "Papelão, tampinhas, rolinhos e outros materiais ganham uma nova vida." },
-  { icon: Lightbulb, title: "Ideias que despertam", text: "Brincadeiras para imaginar, explorar e encontrar novas possibilidades." },
-  { icon: Scissors, title: "Simples de criar", text: "Passos para tirar as ideias do papel, mesmo sem experiência com artesanato." },
-  { icon: Smartphone, title: "Tudo em um só lugar", text: "Um guia digital para consultar no celular ou imprimir quando quiser." },
-];
-const faqs = [
-  ["O que é o Guia de Brinquedos Criativos?", "É um material digital com mais de 300 ideias de brinquedos feitos com materiais do dia a dia, para criar momentos de brincadeira e conexão com as crianças. A oferta inclui também os seis bônus apresentados nesta página."],
-  ["Preciso comprar materiais caros?", "A proposta é aproveitar materiais simples, como caixas de papelão, rolinhos, tampinhas e papel. Dependendo da atividade escolhida, você pode precisar de itens de apoio, como cola, tinta ou barbante."],
-  ["Vou receber um livro físico?", "Não. O produto é digital. Você pode consultar os arquivos em um dispositivo ou imprimir o que quiser; nenhum livro ou brinquedo físico é enviado."],
-  ["Preciso saber fazer artesanato?", "Não é necessário ter experiência. Escolha uma ideia, separe os materiais e crie junto com a criança. O objetivo é se divertir com o processo, não fazer um brinquedo perfeito."],
-  ["As crianças podem fazer sozinhas?", "As atividades devem ser escolhidas de acordo com a idade e realizadas com supervisão de um adulto. Tesouras, colas, ímãs e peças pequenas exigem cuidado especial. Não ofereça peças pequenas a crianças que possam colocá-las na boca."],
-  ["Como funciona a garantia de 7 dias?", "Você tem 7 dias para avaliar o material. Se ele não fizer sentido para sua família, solicite o reembolso pelo canal de atendimento indicado na compra."],
-];
-
-function Index() {
-  const [selected, setSelected] = useState<number | null>(null);
-  const active = selected === null ? undefined : activities[selected];
-  return <div className="overflow-x-clip">
-    <div className="bg-primary py-2.5 text-center text-primary-foreground"><p className="flex items-center justify-center gap-2 px-4 text-xs font-semibold sm:text-sm"><Gift className="size-4" /> Um mundo de brincadeiras por R$ {offer.price} <span className="hidden sm:inline">— 6 bônus incluídos!</span></p></div>
-    <header className="site-container flex h-[72px] items-center justify-between border-b border-border/60">
-      <a href="#" aria-label="Mundo Pequeno Gênio — início" className="flex items-center gap-2.5"><span className="flex size-9 items-center justify-center rounded-lg bg-sunshine text-ink"><Lightbulb className="size-5" /></span><span className="font-heading text-base font-bold leading-4">mundo pequeno<span className="block text-primary">gênio<span className="text-coral">.</span></span></span></a>
-      <span className="flex items-center gap-1.5 text-xs text-muted-foreground"><ShieldCheck className="size-4 text-primary" /><span>7 dias de garantia</span></span>
-    </header>
-
-    <main>
-      <section className="hero-section site-container pb-10 pt-9 text-center sm:pt-11">
-        <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-mint px-4 py-1.5 text-xs font-semibold text-primary"><Sparkles className="size-3.5" /> Menos telas. Mais imaginação. Mais vocês.</div>
-        <h1 className="mx-auto max-w-[850px] font-heading text-[36px] font-extrabold leading-[1.12] sm:text-[48px]">+300 <span className="text-primary">Brinquedos Criativos</span><br className="hidden sm:block" /> feitos com o que você<br className="hidden sm:block" /> <span className="relative inline-block">já tem em casa<span className="absolute -bottom-1 left-0 -z-10 h-3 w-full bg-sunshine/70" /></span></h1>
-        <p className="mx-auto mb-2 mt-5 max-w-[530px] text-sm leading-relaxed text-muted-foreground sm:text-base">Transforme materiais simples em grandes descobertas.<br className="hidden sm:block" /> E o tempo juntos nas melhores memórias da infância.</p>
-        <img src={guide} alt="Guia digital +300 Brinquedos Criativos com foguete de rolinho, binóculos e carrinho de papelão" width={1536} height={1024} fetchPriority="high" className="hero-product" />
-        <div className="mx-auto mt-1 max-w-[470px] text-left">
-          <ul className="space-y-2.5 text-sm">
-            {["Mais de 300 ideias para criar, brincar e aprender juntos", "Materiais acessíveis e passo a passo sem complicação", "Guia 100% digital + 6 bônus para continuar a diversão"].map(text => <li key={text} className="flex items-start gap-2.5"><Check className="mt-0.5 size-4 shrink-0 text-primary" /><span>{text}</span></li>)}
-          </ul>
-          <ProductCTA className="mt-5 w-full" />
-          <p className="mt-4 flex items-center justify-center gap-1.5 text-xs text-muted-foreground"><LockKeyhole className="size-3.5" /> Compra segura <span className="mx-2">·</span><Download className="size-3.5" /> Material digital</p>
-        </div>
-      </section>
-
-      <div className="border-y border-border bg-mint/50"><div className="site-container grid grid-cols-3 gap-3 py-5 text-center"><div><p className="font-heading text-xl font-bold text-primary sm:text-2xl">+300</p><p className="mt-1 text-[11px] text-muted-foreground sm:text-xs">ideias de brinquedos</p></div><div className="border-x border-primary/15"><p className="font-heading text-xl font-bold text-primary sm:text-2xl">100% digital</p><p className="mt-1 text-[11px] text-muted-foreground sm:text-xs">consulte onde quiser</p></div><div><p className="font-heading text-xl font-bold text-primary sm:text-2xl">6 bônus</p><p className="mt-1 text-[11px] text-muted-foreground sm:text-xs">ainda mais diversão</p></div></div></div>
-
-      <section className="section-space site-container">
-        <p className="eyebrow mb-3 text-center">DE COISAS SIMPLES, NASCEM GRANDES IDEIAS</p>
-        <h2 className="section-title">Olha só o que pode virar <span className="text-primary">brincadeira</span></h2>
-        <p className="mx-auto mt-4 max-w-xl text-center text-sm leading-6 text-muted-foreground">Uma caixa deixa de ser uma caixa. Um rolinho ganha asas.<br className="hidden sm:block" /> A imaginação faz o resto.</p>
-        <div className="reference-preview-grid mt-9 grid gap-6 sm:grid-cols-3">
-          {activities.map((activity, i) => <article key={activity.title} className="reference-preview-card overflow-hidden rounded-lg border border-border bg-card"><div className="relative"><img src={activity.image} alt={activity.title} width={1024} height={768} loading="lazy" className="activity-image" /><span className="absolute bottom-3 left-3 rounded bg-background/95 px-2.5 py-1 text-[10px] font-bold text-primary">{activity.category}</span></div><div className="p-5"><h3 className="text-lg font-semibold">{activity.title}</h3><p className="mt-2 text-xs leading-5 text-muted-foreground">{activity.materials}</p><Button variant="link" onClick={() => setSelected(i)} className="mt-3 h-auto p-0 text-xs">Conheça a ideia <ChevronRight className="size-3" /></Button></div></article>)}
-        </div>
-        <p className="mt-4 text-center text-[11px] text-muted-foreground">Imagens ilustrativas de possibilidades de criação.</p>
-        <div className="mt-8 text-center"><ProductCTA>QUERO CRIAR E BRINCAR TAMBÉM</ProductCTA></div>
-      </section>
-
-      <section className="section-space bg-mint">
-        <div className="site-container"><p className="eyebrow mb-3 text-center">DA IDEIA À DIVERSÃO</p><h2 className="section-title">Não precisa ser complicado.<br />Só precisa começar.</h2>
-          <div className="reference-steps mx-auto mt-10 grid max-w-[850px] gap-8 sm:grid-cols-3">{[{ icon: Download, title: "Receba seu guia", text: "Tenha as ideias reunidas em um material digital para consultar." }, { icon: Scissors, title: "Separe os materiais", text: "Escolha uma brincadeira e aproveite o que você tem por perto." }, { icon: Heart, title: "Criem memórias", text: "Convide a criança e curtam cada descoberta feita juntos." }].map((step, i) => <div key={step.title} className="relative text-center"><div className="mx-auto mb-4 flex size-14 items-center justify-center rounded-full bg-background text-primary"><step.icon className="size-6" /></div><span className="text-xs font-bold text-primary">PASSO 0{i + 1}</span><h3 className="mt-2 text-xl font-semibold">{step.title}</h3><p className="mx-auto mt-2 max-w-[240px] text-sm leading-6 text-muted-foreground">{step.text}</p>{i < 2 && <ArrowRight className="absolute -right-7 top-4 hidden size-5 text-primary/30 sm:block" />}</div>)}</div>
-        </div>
-      </section>
-
-      <section className="section-space site-container"><h2 className="section-title">Pequenas criações.<br /><span className="text-primary">Grandes possibilidades.</span></h2><div className="reference-feature-grid mt-11 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">{features.map(feature => <div key={feature.title}><feature.icon className="mb-4 size-7 text-primary" /><h3 className="text-lg font-semibold">{feature.title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{feature.text}</p></div>)}</div></section>
-
-      <section className="section-space bg-soft-pink"><div className="site-container"><p className="eyebrow mb-3 text-center">MAIS PRESENÇA, MENOS “ESTOU ENTEDIADO”</p><h2 className="section-title mx-auto max-w-[700px]">O melhor brinquedo pode ser aquele<br className="hidden sm:block" /> que vocês <span className="text-coral">criam juntos.</span></h2><p className="mx-auto mt-4 max-w-[580px] text-center text-sm leading-6 text-muted-foreground">Você não precisa de uma casa cheia de brinquedos novos para viver momentos especiais. Às vezes, basta uma boa ideia.</p><div className="reference-comparison mx-auto mt-9 grid max-w-[800px] gap-8 sm:grid-cols-2"><div><h3 className="mb-5 text-base font-semibold text-muted-foreground">Quando faltam ideias…</h3>{["O celular acaba sendo a primeira opção", "Os brinquedos novos logo perdem a graça", "Você quer brincar junto, mas não sabe como"].map(t => <p key={t} className="mb-4 flex items-start gap-3 text-sm leading-6 text-muted-foreground"><X className="mt-1 size-4 shrink-0 text-coral" />{t}</p>)}</div><div><h3 className="mb-5 text-base font-semibold text-primary">Quando sobra imaginação…</h3>{["O tempo juntos ganha novas possibilidades", "A criança participa de cada criação", "Materiais simples viram novas aventuras"].map(t => <p key={t} className="mb-4 flex items-start gap-3 text-sm leading-6"><Check className="mt-1 size-4 shrink-0 text-primary" />{t}</p>)}</div></div><div className="mt-7 text-center"><ProductCTA>QUERO MAIS MOMENTOS ASSIM</ProductCTA></div></div></section>
-
-      <section className="section-space site-container"><p className="eyebrow mb-3 text-center">PARA QUEM ACREDITA NO PODER DE BRINCAR</p><h2 className="section-title">Um guia para fazer parte<br />da sua rotina</h2><div className="reference-audience mx-auto mt-10 grid max-w-[850px] gap-x-12 gap-y-8 sm:grid-cols-2">{[["Pais e mães", "Que querem trocar um pouco das telas por tempo de qualidade em família."], ["Avós e cuidadores", "Que adoram inventar novas formas de brincar e se conectar."], ["Educadores", "Que procuram ideias criativas para enriquecer os momentos de aprendizagem."], ["Pequenos grandes inventores", "Que gostam de colocar a mão na massa e descobrir como as coisas funcionam."]].map(([title, text]) => <div key={title} className="flex gap-4"><BadgeCheck className="mt-1 size-5 shrink-0 text-primary" /><div><h3 className="text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{text}</p></div></div>)}</div></section>
-
-      <section className="section-space border-y border-border bg-mint/40"><div className="site-container text-center"><p className="eyebrow mb-3">SEU KIT DE NOVAS POSSIBILIDADES</p><h2 className="section-title">Tudo para a brincadeira<br /><span className="text-primary">não acabar na primeira ideia.</span></h2><img src={guide} alt="Apresentação ilustrativa do guia de brinquedos criativos" loading="lazy" width={1536} height={1024} className="mx-auto mt-6 w-full max-w-[440px]" /><div className="mx-auto max-w-[480px] text-left">{["Guia digital com mais de 300 ideias de brinquedos", "Criações com materiais simples do dia a dia", "Orientações para construir e brincar em família", "Material para consultar no celular ou imprimir", "6 bônus para explorar novas brincadeiras"].map(t => <p key={t} className="mb-3 flex items-start gap-3 text-sm"><Check className="size-4 shrink-0 text-primary" />{t}</p>)}</div></div></section>
-
-      <section className="reference-showcase section-space bg-background" aria-label="Prévia dos materiais">
-        <div className="site-container">
-          <div className="reference-ribbon">MATERIAL DIGITAL PARA TODA A FAMÍLIA</div>
-          <h2 className="section-title">Mais de 300 ideias.<br /><span className="text-primary">Infinitas formas de brincar.</span></h2>
-          <p className="mx-auto mt-4 max-w-xl text-center text-sm text-muted-foreground">Explore as ideias do guia e descubra novas possibilidades para criar em família.</p>
-          <div className="reference-slider-shell mt-8" aria-label="Espaço reservado para carrossel de prévias">
-            <div className="reference-slider-track">
-              {["Prévia do guia 01", "Prévia do guia 02", "Prévia do guia 03", "Prévia do guia 04", "Prévia do guia 05"].map((name, i) => <div key={name} className="reference-empty-slide"><span className="reference-slide-num">0{i+1}</span><BookOpen className="size-10 opacity-30" aria-hidden="true"/><span>{name}</span><small>Imagem em breve</small></div>)}
-            </div>
-          </div>
-          <div className="mt-7 text-center"><ProductCTA>QUERO CRIAR E BRINCAR TAMBÉM</ProductCTA></div>
-        </div>
-      </section>
-
-      <section className="section-space site-container"><p className="eyebrow mb-3 text-center">UM PRESENTE EXTRA PARA SUA FAMÍLIA</p><h2 className="section-title">A diversão vem com <span className="text-coral">6 bônus</span></h2><p className="mt-4 text-center text-sm text-muted-foreground">Mais atividades, descobertas e risadas. Tudo incluído no seu guia.</p><div className="reference-bonuses mt-10 grid gap-x-10 gap-y-8 sm:grid-cols-2 lg:grid-cols-3">{bonuses.map(([title, text], i) => { const Icon = [BookOpen, Palette, WandSparkles, Sparkles, Heart, BadgeCheck][i]; return <article className="bonus-item reference-bonus-card flex flex-col items-center text-center" key={title}><div className="reference-bonus-image" aria-label={`Imagem reservada para o bônus ${i+1}`}><div className="reference-bonus-spine"/><BookOpen className="size-12 text-primary/30" aria-hidden="true"/><span>CAPA DO BÔNUS {i+1}</span></div><div className="reference-bonus-copy"><p className="mb-2 text-[10px] font-bold text-primary">BÔNUS 0{i + 1} <span className="ml-2 text-muted-foreground">INCLUÍDO</span></p><h3 className="text-base font-semibold leading-5">{title}</h3><p className="mt-2 text-xs leading-5 text-muted-foreground">{text}</p></div></article>; })}</div></section>
-
-      <section id="oferta" className="section-space bg-mint"><div className="site-container text-center"><p className="eyebrow mb-3">A PRÓXIMA BRINCADEIRA COMEÇA AQUI</p><h2 className="section-title">Mais de 300 ideias.<br />Um só convite: <span className="text-primary">vamos brincar?</span></h2><article className="reference-offer-card mx-auto mt-9 max-w-[460px] overflow-hidden rounded-lg border-2 border-primary bg-background"><div className="flex items-center justify-center gap-2 bg-primary py-3 text-xs font-bold text-primary-foreground"><Gift className="size-4" /> GUIA COMPLETO + TODOS OS 6 BÔNUS</div><div className="px-6 pb-7 pt-5"><img src={guide} alt="Kit digital de brinquedos criativos" loading="lazy" width={1536} height={1024} className="mx-auto w-[280px] max-w-full" /><h3 className="mt-2 text-2xl font-bold">Seu kit de criatividade</h3><ul className="mx-auto my-5 max-w-[315px] space-y-3 text-left text-sm">{["+300 brinquedos criativos", "6 materiais extras incluídos", "Produto 100% digital", "Pagamento único, sem mensalidade", "7 dias de garantia"].map(t => <li key={t} className="flex items-center gap-2"><Check className="size-4 text-primary" />{t}</li>)}</ul><div className="border-t border-border pt-5"><p className="text-sm text-muted-foreground">De <span className="line-through">R$ {offer.originalPrice}</span> por apenas</p><p className="my-1 font-heading text-[56px] font-extrabold leading-tight text-primary"><span className="mr-1 text-2xl">R$</span>{offer.price}</p><p className="mb-5 text-xs text-muted-foreground">Pagamento único</p><ProductCTA checkout className="w-full">QUERO MEU GUIA COMPLETO</ProductCTA><p className="mt-4 flex items-center justify-center gap-1.5 text-[11px] text-muted-foreground"><LockKeyhole className="size-3" /> Você será direcionado para a compra segura</p></div></div></article><div className="mx-auto mt-5 flex max-w-[460px] items-center justify-center gap-6 text-xs text-muted-foreground"><span className="flex items-center gap-1.5"><ShieldCheck className="size-4" /> Compra protegida</span><span className="flex items-center gap-1.5"><Mail className="size-4" /> Entrega digital</span></div></div></section>
-
-      <section className="site-container flex max-w-[850px] flex-col items-center gap-6 py-16 text-center sm:flex-row sm:text-left"><div className="reference-guarantee-stamp"><ShieldCheck className="size-9" /><span className="font-heading text-lg font-bold">7 DIAS</span><span className="text-[10px] font-bold">GARANTIA</span></div><div><h2 className="text-2xl font-bold">Pode conhecer sem preocupação.</h2><p className="mt-3 text-sm leading-6 text-muted-foreground">Você tem 7 dias para conhecer o guia. Se não for o que esperava, solicite seu dinheiro de volta. A melhor brincadeira começa com tranquilidade.</p></div></section>
-
-      <section className="section-space border-t border-border"><div className="site-container max-w-[760px]"><p className="eyebrow mb-3 text-center">ANTES DE COMEÇAR</p><h2 className="section-title">Ficou alguma dúvida?</h2><Accordion type="single" collapsible className="mt-8">{faqs.map(([q, a], i) => <AccordionItem value={`faq-${i}`} key={q}><AccordionTrigger className="py-5 text-sm font-semibold">{q}</AccordionTrigger><AccordionContent className="leading-6 text-muted-foreground">{a}</AccordionContent></AccordionItem>)}</Accordion><div className="mt-9 text-center"><ProductCTA>VAMOS CRIAR A PRIMEIRA BRINCADEIRA?</ProductCTA></div></div></section>
-    </main>
-    <footer className="border-t border-border bg-mint/40 py-8"><div className="site-container flex flex-col items-center justify-between gap-5 text-center sm:flex-row sm:text-left"><div><p className="font-heading text-base font-bold">mundo pequeno <span className="text-primary">gênio.</span></p><p className="mt-1 text-xs text-muted-foreground">Grandes descobertas começam com pequenas ideias.</p></div><div className="text-xs text-muted-foreground"><a href={`mailto:${offer.support}`} className="inline-flex items-center gap-2 hover:text-primary"><Mail className="size-3.5" /> Atendimento</a><p className="mt-2">© 2026 Mundo Pequeno Gênio</p></div></div><p className="site-container mt-6 text-center text-[10px] leading-5 text-muted-foreground">Produto digital. Imagens ilustrativas. As brincadeiras devem ser realizadas com supervisão de um adulto.</p></footer>
-    <Dialog open={active !== undefined} onOpenChange={open => { if (!open) setSelected(null); }}><DialogContent className="max-h-[90dvh] overflow-y-auto sm:max-w-[520px]">{active && <><DialogHeader><DialogTitle className="pr-6 font-heading text-2xl">{active.title}</DialogTitle><DialogDescription>Uma possibilidade para transformar materiais em brincadeira.</DialogDescription></DialogHeader><img src={active.image} alt={active.title} width={1024} height={768} className="activity-image rounded-md" /><p className="text-sm leading-6 text-muted-foreground">{active.description}</p><div className="flex items-center gap-2 text-xs font-semibold text-primary"><Lightbulb className="size-4" />{active.skill}</div><p className="text-xs leading-5 text-muted-foreground">Imagem ilustrativa. Sempre com supervisão de um adulto.</p><ProductCTA className="w-full" onClick={() => setSelected(null)}>CONHEÇA O GUIA COMPLETO</ProductCTA></>}</DialogContent></Dialog>
-  </div>;
-}
