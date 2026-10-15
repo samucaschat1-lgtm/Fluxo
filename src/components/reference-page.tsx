@@ -77,8 +77,8 @@ function isPremiumPurchase(element: HTMLElement): boolean {
   let parent = element.parentElement;
   for (let depth = 0; parent && depth < 5; depth++, parent = parent.parentElement) {
     const text = (parent.textContent || "").toLowerCase();
-    const hasPremium = /(?:plano\\s*)?premium/i.test(text);
-    const hasBasic = /plano\\s*b[aá]sico/i.test(text);
+    const hasPremium = /(?:plano\s*)?premium/i.test(text);
+    const hasBasic = /plano\s*b[aá]sico/i.test(text);
     if (hasPremium && !hasBasic && parent.querySelectorAll("a,button").length <= 3) return true;
     if (hasBasic) break;
   }
@@ -87,7 +87,7 @@ function isPremiumPurchase(element: HTMLElement): boolean {
 
 function isPurchaseCTA(element: HTMLElement): boolean {
   if (element.closest("[data-basic-sticky-cta]")) return false;
-  const label = (element.textContent || "").replace(/\\s+/g, " ").trim();
+  const label = (element.textContent || "").replace(/\s+/g, " ").trim();
   if (label.length > 180) return false;
   const href = element instanceof HTMLAnchorElement ? element.getAttribute("href") || "" : "";
   return /ggcheckout|cakto|checkout|#planos/i.test(href) ||
