@@ -90,6 +90,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         rel: "stylesheet",
         href: "/layout-fixes.css",
       },
+      {
+        rel: "stylesheet",
+        href: "/vibrant-theme.css",
+      },
     ],
   }),
   shellComponent: RootShell,
