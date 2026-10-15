@@ -1,49 +1,16 @@
 import { useEffect, useRef, useState } from "react";
 
-/** Preview images are loaded directly from the ZIP committed to /public.
- * Extracting only the required WebP files avoids changing other site assets.
- */
-async function loadProjectImages(): Promise<string[]> {
-  const response = await fetch("/carrossel_10_projetos_brinquedoskids.zip");
-  if (!response.ok) throw new Error("Arquivo ZIP do carrossel indisponível");
-  const buffer = await response.arrayBuffer();
-  const data = new DataView(buffer);
-  const bytes = new Uint8Array(buffer);
-  const images: string[] = Array(10).fill("");
-  const decoder = new TextDecoder();
-  let offset = 0;
-  while (offset + 30 <= buffer.byteLength && data.getUint32(offset, true) === 0x04034b50) {
-    const method = data.getUint16(offset + 8, true);
-    const size = data.getUint32(offset + 18, true);
-    const nameLength = data.getUint16(offset + 26, true);
-    const extraLength = data.getUint16(offset + 28, true);
-    const filename = decoder.decode(bytes.subarray(offset + 30, offset + 30 + nameLength));
-    const start = offset + 30 + nameLength + extraLength;
-    const match = filename.match(/(?:^|\/)projeto-(\d{2})\.webp$/);
-    if (match) {
-      const index = Number(match[1]) - 1;
-      if (index >= 0 && index < images.length) {
-        const compressed = bytes.slice(start, start + size);
-        let extracted: Blob;
-        if (method === 0) {
-          extracted = new Blob([compressed], { type: "image/webp" });
-        } else if (method === 8) {
-          const stream = new Blob([compressed]).stream().pipeThrough(new DecompressionStream("deflate-raw"));
-          extracted = new Blob([await new Response(stream).arrayBuffer()], { type: "image/webp" });
-        } else {
-          throw new Error("Compressão ZIP não suportada: " + method);
-        }
-        images[index] = URL.createObjectURL(extracted);
-      }
-    }
-    offset = start + size;
-  }
-  if (images.some((src) => !src)) {
-    images.forEach((src) => { if (src) URL.revokeObjectURL(src); });
-    throw new Error("O ZIP não contém as dez prévias esperadas");
-  }
-  return images;
-}
+/** Images uploaded to /public for the cardboard game and toy previews. */
+const projectImages = [
+  "Imagem do ChatGPT 15 de out. de 2026, 09_00_22.png",
+  "Imagem do ChatGPT 15 de out. de 2026, 09_00_26.png",
+  "Imagem do ChatGPT 15 de out. de 2026, 09_00_29.png",
+  "Imagem do ChatGPT 15 de out. de 2026, 09_05_49-1.png",
+  "Imagem do ChatGPT 15 de out. de 2026, 09_05_50-2.png",
+  "Imagem do ChatGPT 15 de out. de 2026, 09_05_51-3.png",
+  "Imagem do ChatGPT 15 de out. de 2026, 09_05_52-4.png",
+  "Imagem do ChatGPT 15 de out. de 2026, 09_05_56-5.png",
+].map((filename) => "/" + encodeURIComponent(filename));
 
 function replacePreviewCarousel(root: HTMLElement, previews: string[]): boolean {
   const title = Array.from(root.querySelectorAll("h2")).find(
@@ -68,7 +35,7 @@ function replacePreviewCarousel(root: HTMLElement, previews: string[]): boolean 
       const card = cards[n % 5].cloneNode(true) as HTMLElement;
       const img = card.querySelector("img");
       if (img) {
-        img.src = previews[rowIndex * 5 + (n % 5)];
+        img.src = previews[(rowIndex * 5 + (n % 5)) % previews.length];
         img.alt = "Projeto criativo com materiais recicláveis " + (rowIndex * 5 + n % 5 + 1);
         img.loading = "lazy";
         img.decoding = "async";
@@ -89,16 +56,12 @@ export function ReferencePage() {
     let cancelled = false;
     let unmount: (() => void) | undefined;
     let observer: MutationObserver | undefined;
-    let objectUrls: string[] = [];
     const moduleUrl = new URL("/reference/site.js", window.location.origin).href;
 
-    Promise.all([import(/* @vite-ignore */ moduleUrl), loadProjectImages()])
-      .then(([module, previews]) => {
-        if (cancelled) {
-          previews.forEach(URL.revokeObjectURL);
-          return;
-        }
-        objectUrls = previews;
+    import(/* @vite-ignore */ moduleUrl)
+      .then((module) => {
+        if (cancelled) return;
+        const previews = projectImages;
         if (container.current) {
           unmount = module.mountReferencePage(container.current);
           observer = new MutationObserver(() => {
@@ -121,7 +84,6 @@ export function ReferencePage() {
       cancelled = true;
       observer?.disconnect();
       unmount?.();
-      objectUrls.forEach(URL.revokeObjectURL);
     };
   }, []);
 
