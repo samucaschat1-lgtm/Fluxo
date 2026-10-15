@@ -50,19 +50,20 @@ function replacePreviewCarousel(root: HTMLElement, previews: string[]): boolean 
 
 
 const BASIC_CHECKOUT_URL = "https://ggcheckout.app/checkout/v5/37188bd2-cc3a-43d0-b695-cbd0fc08ba13";
+const PREMIUM_CHECKOUT_URL = "https://ggcheckout.app/checkout/v5/42268e97-5e14-4e72-b9de-63a1111c49ca";
 
 /** Identify the Premium purchase control without affecting other purchase CTAs. */
 function isPremiumPurchase(element: HTMLElement): boolean {
   const ownText = (element.textContent || "").toLowerCase();
-  if (/premium/.test(ownText)) return true;
-  // Plan buttons are usually inside their own plan card.
+  if (/premium/i.test(ownText)) return true;
+  // Restrict matching to a plan card; avoid identifying the whole plans section.
   let parent = element.parentElement;
-  for (let depth = 0; parent && depth < 4; depth++, parent = parent.parentElement) {
-    const headings = Array.from(parent.querySelectorAll("h2,h3,h4,h5,strong"));
-    if (headings.some((heading) => /plano\\s*premium|premium/i.test(heading.textContent || "")) &&
-        !headings.some((heading) => /plano\\s*b[aá]sico/i.test(heading.textContent || ""))) {
-      return true;
-    }
+  for (let depth = 0; parent && depth < 5; depth++, parent = parent.parentElement) {
+    const text = (parent.textContent || "").toLowerCase();
+    const hasPremium = /(?:plano\\s*)?premium/i.test(text);
+    const hasBasic = /plano\\s*b[aá]sico/i.test(text);
+    if (hasPremium && !hasBasic && parent.querySelectorAll("a,button").length <= 3) return true;
+    if (hasBasic) break;
   }
   return false;
 }
@@ -78,11 +79,12 @@ function isPurchaseCTA(element: HTMLElement): boolean {
 
 function redirectBasicCTAs(root: HTMLElement): void {
   root.querySelectorAll<HTMLElement>("a,button,[role='button']").forEach((element) => {
-    if (!isPurchaseCTA(element) || isPremiumPurchase(element)) return;
+    if (!isPurchaseCTA(element)) return;
+    const targetUrl = isPremiumPurchase(element) ? PREMIUM_CHECKOUT_URL : BASIC_CHECKOUT_URL;
     if (element instanceof HTMLAnchorElement) {
-      if (element.href !== BASIC_CHECKOUT_URL) element.href = BASIC_CHECKOUT_URL;
+      if (element.getAttribute("href") !== targetUrl) element.setAttribute("href", targetUrl);
     }
-    element.dataset.basicCheckoutCta = "true";
+    element.dataset.checkoutCta = "true";
   });
 }
 
@@ -99,10 +101,10 @@ export function ReferencePage() {
       if (!(target instanceof Element) || !container.current) return;
       const button = target.closest<HTMLElement>("a,button,[role='button']");
       if (!button || !container.current.contains(button) ||
-          !isPurchaseCTA(button) || isPremiumPurchase(button)) return;
+          !isPurchaseCTA(button)) return;
       event.preventDefault();
       event.stopPropagation();
-      window.location.assign(BASIC_CHECKOUT_URL);
+      window.location.assign(isPremiumPurchase(button) ? PREMIUM_CHECKOUT_URL : BASIC_CHECKOUT_URL);
     };
     container.current?.addEventListener("click", handlePurchaseClick, true);
     const moduleUrl = new URL("/reference/site.js", window.location.origin).href;
