@@ -49,7 +49,7 @@ function replacePreviewCarousel(root: HTMLElement, previews: string[]): boolean 
 }
 
 
-const BASIC_CHECKOUT_URL = "https://ggcheckout.app/products-checkout-v2/checkout/37188bd2-cc3a-43d0-b695-cbd0fc08ba13";
+const BASIC_CHECKOUT_URL = "https://ggcheckout.app/checkout/v5/37188bd2-cc3a-43d0-b695-cbd0fc08ba13";
 
 /** Identify the Premium purchase control without affecting other purchase CTAs. */
 function isPremiumPurchase(element: HTMLElement): boolean {
