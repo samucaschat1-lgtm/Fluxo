@@ -7,7 +7,8 @@ function repairBonusImages(root: HTMLElement): void {
     if (!match) return;
     const number = Number(match[1]);
     if (number < 1 || number > 6) return;
-    const path = "/bonus%20" + number + "%20kids.webp";
+    const imageNumber = number === 1 ? 6 : number === 6 ? 1 : number;
+    const path = "/bonus%20" + imageNumber + "%20kids.webp";
     if (img.getAttribute("src") !== path) img.setAttribute("src", path);
   });
 }
