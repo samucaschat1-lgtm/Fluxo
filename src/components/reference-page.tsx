@@ -1,6 +1,19 @@
+import "./kids-theme.css";
 import { useEffect, useRef, useState } from "react";
 
+function repairBonusImages(root: HTMLElement): void {
+  root.querySelectorAll<HTMLImageElement>('img[alt^="Capa do Bônus"]').forEach((img) => {
+    const match = img.alt.match(/Bônus\\s+(\\d+)/i);
+    if (!match) return;
+    const number = Number(match[1]);
+    if (number < 1 || number > 6) return;
+    const path = "/bonus%20" + number + "%20kids.webp";
+    if (img.getAttribute("src") !== path) img.setAttribute("src", path);
+  });
+}
+
 function optimizeImages(root: HTMLElement): void {
+  repairBonusImages(root);
   const images = root.querySelectorAll<HTMLImageElement>("img");
   images.forEach((img, index) => {
     // Preserve the initial hero image as a high-priority request.
@@ -115,7 +128,7 @@ export function ReferencePage() {
   }, []);
 
   return <>
-    <div ref={container} />
+    <div ref={container} className="kids-page" />
     {failed && <p role="alert">Não foi possível carregar a página. <a href="/">Tentar novamente</a></p>}
   </>;
 }
