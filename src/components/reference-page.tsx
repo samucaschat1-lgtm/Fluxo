@@ -25,6 +25,7 @@ function optimizeImages(root: HTMLElement): void {
     }
     img.decoding = "async";
     if (!img.hasAttribute("alt")) img.alt = "";
+    img.style.maxWidth = "100%";
   });
 }
 
@@ -51,7 +52,13 @@ function replacePreviewCarousel(root: HTMLElement, previews: string[]): boolean 
       const card = cards[n % 5].cloneNode(true) as HTMLElement;
       const img = card.querySelector("img");
       if (img) {
-        img.src = previews[(rowIndex * 5 + (n % 5)) % previews.length];
+        const originalSrc = img.src;
+        const replacementSrc = previews[(rowIndex * 5 + (n % 5)) % previews.length];
+        img.onerror = () => {
+          img.onerror = null;
+          img.src = originalSrc;
+        };
+        img.src = replacementSrc;
         img.alt = "Projeto criativo com materiais recicláveis " + (rowIndex * 5 + n % 5 + 1);
         img.loading = "lazy";
         img.decoding = "async";
@@ -86,7 +93,6 @@ function isPremiumPurchase(element: HTMLElement): boolean {
 }
 
 function isPurchaseCTA(element: HTMLElement): boolean {
-  if (element.closest("[data-basic-sticky-cta]")) return false;
   const label = (element.textContent || "").replace(/\s+/g, " ").trim();
   if (label.length > 180) return false;
   const href = element instanceof HTMLAnchorElement ? element.getAttribute("href") || "" : "";
@@ -169,13 +175,6 @@ export function ReferencePage() {
 
   return <>
     <div ref={container} />
-    <div data-basic-sticky-cta className="basic-sticky-offer" role="region" aria-label="Oferta do Plano Básico">
-      <div className="basic-sticky-offer__info">
-        <span className="basic-sticky-offer__label">Plano Básico • Acesso digital</span>
-        <strong>Por apenas R$ 10,00</strong>
-      </div>
-      <a href={BASIC_CHECKOUT_URL} className="basic-sticky-offer__button">QUERO GARANTIR <span aria-hidden="true">→</span></a>
-    </div>
     {failed && <p role="alert">Não foi possível carregar a página. <a href="/">Tentar novamente</a></p>}
   </>;
 }
