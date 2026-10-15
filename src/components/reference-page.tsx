@@ -13,42 +13,6 @@ function repairBonusImages(root: HTMLElement): void {
 }
 
 
-const myCarouselImages = [
-  "Imagem do ChatGPT 15 de out. de 2026, 09_00_22.png",
-  "Imagem do ChatGPT 15 de out. de 2026, 09_00_26.png",
-  "Imagem do ChatGPT 15 de out. de 2026, 09_00_29.png",
-  "Imagem do ChatGPT 15 de out. de 2026, 09_05_49-1.png",
-  "Imagem do ChatGPT 15 de out. de 2026, 09_05_50-2.png",
-  "Imagem do ChatGPT 15 de out. de 2026, 09_05_51-3.png",
-  "Imagem do ChatGPT 15 de out. de 2026, 09_05_52-4.png",
-  "Imagem do ChatGPT 15 de out. de 2026, 09_05_56-5.png",
-].map((name) => "/" + encodeURIComponent(name));
-
-function restoreMyCarousel(root: HTMLElement): void {
-  const heading = Array.from(root.querySelectorAll("h2")).find((el) =>
-    /veja algumas p[aá]ginas por dentro/i.test(el.textContent || "")
-  );
-  if (!heading) return;
-  // This is the single preview track directly following the section heading.
-  let next = heading.parentElement?.nextElementSibling;
-  let track: Element | null = null;
-  for (let i = 0; next && i < 3; i++, next = next.nextElementSibling) {
-    const candidate = next.querySelector("div[style*='animation']") || next;
-    if (candidate.querySelectorAll("img").length >= 5) { track = candidate; break; }
-  }
-  if (!track) return;
-  const imgs = Array.from(track.querySelectorAll<HTMLImageElement>("img"));
-  imgs.forEach((img, i) => {
-    const desired = myCarouselImages[i % myCarouselImages.length];
-    if (img.dataset.myCarouselImage === desired) return;
-    img.dataset.myCarouselImage = desired;
-    img.src = desired;
-    img.alt = "Brinquedo criativo - projeto " + ((i % myCarouselImages.length) + 1);
-    img.loading = "lazy";
-    img.decoding = "async";
-  });
-}
-
 function optimizeImages(root: HTMLElement): void {
   repairBonusImages(root);
   const images = root.querySelectorAll<HTMLImageElement>("img");
@@ -139,13 +103,11 @@ export function ReferencePage() {
               scheduled = false;
               if (!container.current || cancelled) return;
               redirectBasicCTAs(container.current);
-              restoreMyCarousel(container.current);
               optimizeImages(container.current);
             });
           });
           observer.observe(container.current, { childList: true, subtree: true });
           redirectBasicCTAs(container.current);
-          restoreMyCarousel(container.current);
           optimizeImages(container.current);
         }
       })
@@ -154,7 +116,7 @@ export function ReferencePage() {
         // Keep the original page functional even if the preview ZIP cannot load.
         if (cancelled) return;
         import(/* @vite-ignore */ moduleUrl)
-          .then((module) => { if (!cancelled && container.current) { unmount = module.mountReferencePage(container.current); redirectBasicCTAs(container.current); restoreMyCarousel(container.current); optimizeImages(container.current); } })
+          .then((module) => { if (!cancelled && container.current) { unmount = module.mountReferencePage(container.current); redirectBasicCTAs(container.current); optimizeImages(container.current); } })
           .catch(() => { if (!cancelled) setFailed(true); });
       });
 
