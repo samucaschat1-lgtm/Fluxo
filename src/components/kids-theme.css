@@ -37,3 +37,7 @@
 .kids-page section article.bonus-uniform-card:has(img[alt^="Capa do Bônus 5 "]) { background:#7844A5!important; color:#FFFFFF!important; border-color:#7844A5!important; }
 .kids-page section article.bonus-uniform-card:has(img[alt^="Capa do Bônus 6 "]) { background:#B94D18!important; color:#FFFFFF!important; border-color:#B94D18!important; }
 .kids-page section article.bonus-uniform-card:has(img[alt^="Capa do Bônus"]) :is(h2,h3,h4,p,span,div) { color:inherit!important; }
+
+/* Somente o card do material principal: mesmo azul dos CTAs. */
+.kids-page section .kids-material-summary { background:var(--kids-blue)!important; color:#fff!important; }
+.kids-page section .kids-material-summary :is(h3,p,span) { color:#fff!important; }

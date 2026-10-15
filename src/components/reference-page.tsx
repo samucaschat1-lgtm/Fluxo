@@ -7,7 +7,8 @@ function repairBonusImages(root: HTMLElement): void {
     if (!match) return;
     const number = Number(match[1]);
     if (number < 1 || number > 6) return;
-    const imageNumber = number === 1 ? 6 : number === 6 ? 1 : number;
+    // Asset files are numbered in reverse order of the displayed bonus titles.
+    const imageNumber = 7 - number;
     const path = "/bonus%20" + imageNumber + "%20kids.webp";
     if (img.getAttribute("src") !== path) img.setAttribute("src", path);
   });
@@ -85,7 +86,7 @@ export function ReferencePage() {
       window.location.assign(isPremiumPurchase(button) ? PREMIUM_CHECKOUT_URL : BASIC_CHECKOUT_URL);
     };
     container.current?.addEventListener("click", handlePurchaseClick, true);
-    const moduleUrl = new URL("/reference/site.js?v=red-bonuses-20261015", window.location.origin).href;
+    const moduleUrl = new URL("/reference/site.js?v=bonus-covers-summary-20261015", window.location.origin).href;
 
     import(/* @vite-ignore */ moduleUrl)
       .then((module) => {
