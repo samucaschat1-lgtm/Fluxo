@@ -12,6 +12,22 @@ const projectImages = [
   "Imagem do ChatGPT 15 de out. de 2026, 09_05_56-5.png",
 ].map((filename) => "/" + encodeURIComponent(filename));
 
+function optimizeImages(root: HTMLElement): void {
+  const images = root.querySelectorAll<HTMLImageElement>("img");
+  images.forEach((img, index) => {
+    // Preserve the initial hero image as a high-priority request.
+    if (index === 0) {
+      img.loading = "eager";
+      img.fetchPriority = "high";
+    } else {
+      img.loading = "lazy";
+      img.fetchPriority = "low";
+    }
+    img.decoding = "async";
+    if (!img.hasAttribute("alt")) img.alt = "";
+  });
+}
+
 function replacePreviewCarousel(root: HTMLElement, previews: string[]): boolean {
   const title = Array.from(root.querySelectorAll("h2")).find(
     (el) => el.textContent?.trim().toLowerCase() === "veja algumas páginas por dentro"
@@ -39,6 +55,7 @@ function replacePreviewCarousel(root: HTMLElement, previews: string[]): boolean 
         img.alt = "Projeto criativo com materiais recicláveis " + (rowIndex * 5 + n % 5 + 1);
         img.loading = "lazy";
         img.decoding = "async";
+        img.fetchPriority = "low";
       }
       return card;
     });
@@ -96,6 +113,7 @@ export function ReferencePage() {
     let cancelled = false;
     let unmount: (() => void) | undefined;
     let observer: MutationObserver | undefined;
+    let scheduled = false;
     const handlePurchaseClick = (event: MouseEvent) => {
       const target = event.target;
       if (!(target instanceof Element) || !container.current) return;
@@ -116,10 +134,15 @@ export function ReferencePage() {
         if (container.current) {
           unmount = module.mountReferencePage(container.current);
           observer = new MutationObserver(() => {
-            if (container.current) {
+            if (scheduled) return;
+            scheduled = true;
+            requestAnimationFrame(() => {
+              scheduled = false;
+              if (!container.current || cancelled) return;
               replacePreviewCarousel(container.current, previews);
               redirectBasicCTAs(container.current);
-            }
+              optimizeImages(container.current);
+            });
           });
           observer.observe(container.current, { childList: true, subtree: true });
           replacePreviewCarousel(container.current, previews);
@@ -131,7 +154,7 @@ export function ReferencePage() {
         // Keep the original page functional even if the preview ZIP cannot load.
         if (cancelled) return;
         import(/* @vite-ignore */ moduleUrl)
-          .then((module) => { if (!cancelled && container.current) unmount = module.mountReferencePage(container.current); })
+          .then((module) => { if (!cancelled && container.current) { unmount = module.mountReferencePage(container.current); redirectBasicCTAs(container.current); optimizeImages(container.current); } })
           .catch(() => { if (!cancelled) setFailed(true); });
       });
 
