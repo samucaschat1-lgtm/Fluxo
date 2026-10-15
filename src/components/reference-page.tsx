@@ -1,17 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 
-/** Images uploaded to /public for the cardboard game and toy previews. */
-const projectImages = [
-  "Imagem do ChatGPT 15 de out. de 2026, 09_00_22.png",
-  "Imagem do ChatGPT 15 de out. de 2026, 09_00_26.png",
-  "Imagem do ChatGPT 15 de out. de 2026, 09_00_29.png",
-  "Imagem do ChatGPT 15 de out. de 2026, 09_05_49-1.png",
-  "Imagem do ChatGPT 15 de out. de 2026, 09_05_50-2.png",
-  "Imagem do ChatGPT 15 de out. de 2026, 09_05_51-3.png",
-  "Imagem do ChatGPT 15 de out. de 2026, 09_05_52-4.png",
-  "Imagem do ChatGPT 15 de out. de 2026, 09_05_56-5.png",
-].map((filename) => "/" + encodeURIComponent(filename));
-
 function optimizeImages(root: HTMLElement): void {
   const images = root.querySelectorAll<HTMLImageElement>("img");
   images.forEach((img, index) => {
@@ -28,50 +16,6 @@ function optimizeImages(root: HTMLElement): void {
     img.style.maxWidth = "100%";
   });
 }
-
-function replacePreviewCarousel(root: HTMLElement, previews: string[]): boolean {
-  const title = Array.from(root.querySelectorAll("h2")).find(
-    (el) => el.textContent?.trim().toLowerCase() === "veja algumas páginas por dentro"
-  );
-  if (!title?.parentElement) return false;
-
-  const tracks: HTMLElement[] = [];
-  let sibling = title.parentElement.nextElementSibling;
-  for (let i = 0; sibling && i < 5 && tracks.length < 2; i++, sibling = sibling.nextElementSibling) {
-    const track = sibling.querySelector<HTMLElement>("div[style*='animation']");
-    if (track && track.querySelectorAll("img").length >= 5) tracks.push(track);
-  }
-  if (tracks.length !== 2) return false;
-
-  tracks.forEach((track, rowIndex) => {
-    if (track.dataset.projectImagesApplied === "yes") return;
-    const cards = Array.from(track.querySelectorAll<HTMLImageElement>("img"))
-      .slice(0, 5).map((img) => img.parentElement).filter((card): card is HTMLElement => !!card);
-    if (cards.length !== 5) return;
-    const replacements = Array.from({ length: 10 }, (_, n) => {
-      const card = cards[n % 5].cloneNode(true) as HTMLElement;
-      const img = card.querySelector("img");
-      if (img) {
-        const originalSrc = img.src;
-        const replacementSrc = previews[(rowIndex * 5 + (n % 5)) % previews.length];
-        img.onerror = () => {
-          img.onerror = null;
-          img.src = originalSrc;
-        };
-        img.src = replacementSrc;
-        img.alt = "Projeto criativo com materiais recicláveis " + (rowIndex * 5 + n % 5 + 1);
-        img.loading = "lazy";
-        img.decoding = "async";
-        img.fetchPriority = "low";
-      }
-      return card;
-    });
-    track.replaceChildren(...replacements);
-    track.dataset.projectImagesApplied = "yes";
-  });
-  return tracks.every((track) => track.dataset.projectImagesApplied === "yes");
-}
-
 
 const BASIC_CHECKOUT_URL = "https://ggcheckout.app/checkout/v5/37188bd2-cc3a-43d0-b695-cbd0fc08ba13";
 const PREMIUM_CHECKOUT_URL = "https://ggcheckout.app/checkout/v5/42268e97-5e14-4e72-b9de-63a1111c49ca";
@@ -136,7 +80,6 @@ export function ReferencePage() {
     import(/* @vite-ignore */ moduleUrl)
       .then((module) => {
         if (cancelled) return;
-        const previews = projectImages;
         if (container.current) {
           unmount = module.mountReferencePage(container.current);
           observer = new MutationObserver(() => {
@@ -145,13 +88,11 @@ export function ReferencePage() {
             requestAnimationFrame(() => {
               scheduled = false;
               if (!container.current || cancelled) return;
-              replacePreviewCarousel(container.current, previews);
               redirectBasicCTAs(container.current);
               optimizeImages(container.current);
             });
           });
           observer.observe(container.current, { childList: true, subtree: true });
-          replacePreviewCarousel(container.current, previews);
           redirectBasicCTAs(container.current);
           optimizeImages(container.current);
         }
