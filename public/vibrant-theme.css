@@ -1,31 +1,26 @@
-/* Brinquedos Kids — palette 2026: electric violet, aqua, coral, sunshine. */
-:root{--background:250 100% 98%;--foreground:245 37% 19%;--primary:262 84% 52%;--primary-foreground:0 0% 100%;--secondary:185 90% 92%;--secondary-foreground:245 37% 19%;--accent:15 100% 91%;--accent-foreground:245 37% 19%;--muted:258 80% 95%;--muted-foreground:245 24% 35%;--border:264 66% 83%;--ring:262 84% 52%;--card:0 0% 100%;--card-foreground:245 37% 19%}
-html,body{background:#f9f5ff;color:#292043}
-body{background:linear-gradient(180deg,#eafaff 0%,#fff3fc 45%,#f9f5ff 100%)}
-section{position:relative}
-section:nth-of-type(6n+1){background-color:#eefcff!important}
-section:nth-of-type(6n+2){background-color:#fff0fa!important}
-section:nth-of-type(6n+3){background-color:#fff8dc!important}
-section:nth-of-type(6n+4){background-color:#efe9ff!important}
-section:nth-of-type(6n+5){background-color:#edfff2!important}
-section:nth-of-type(6n){background-color:#ffecea!important}
-section :is(h1,h2,h3,h4){color:#342052}
-section h1{color:#392083}
-section h2{color:#5d29ba}
-section :is(p,li){color:#3c3156}
-section :is(.text-muted-foreground){color:#59496b!important}
-section :is(.bg-white,.bg-background){background-color:#fff!important}
-section :is(.rounded-xl,.rounded-2xl,.rounded-3xl,.rounded-\[26px\]){border-color:#d9c9ff}
-section :is(.border,.border-2){border-color:#cfbafc}
-section :is(.shadow-lg,.shadow-xl){box-shadow:0 14px 32px rgba(111,63,190,.14)}
-section a[href*="checkout"],section button[class*="bg-"],section a[class*="bg-"]{background:#7034de!important;color:#fff!important;border-color:#5521b7!important;box-shadow:0 5px 0 #4d21a2,0 10px 20px rgba(102,57,180,.18)!important}
-section a[href*="checkout"]:hover,section button[class*="bg-"]:hover,section a[class*="bg-"]:hover{background:#5723bb!important}
-section :is(.text-green-600,.text-green-700,.text-emerald-600,.text-teal-600){color:#7a2ce0!important}
-section :is(.text-yellow-600,.text-orange-600){color:#ed4f66!important}
-section :is(.bg-green-50,.bg-emerald-50,.bg-teal-50){background:#e9faff!important}
-section :is(.bg-yellow-50,.bg-orange-50){background:#fff0db!important}
-section svg:not([fill="none"]){color:inherit}
-section :is(input,textarea,select){border-color:#aa8cec;accent-color:#7c3aed}
-section :is(a,button):focus-visible{outline:3px solid #ff5c7f;outline-offset:3px}
-section img{border-color:#decfff}
-@media(max-width:767px){section:nth-of-type(n){background-image:none}section :is(h1,h2,h3){text-wrap:balance}}
+/* Brinquedos Kids: one warm beige background with restrained colorful accents */
+:root{--background:40 56% 95%;--foreground:210 27% 23%;--primary:207 65% 43%;--primary-foreground:0 0% 100%;--secondary:175 38% 90%;--secondary-foreground:210 27% 23%;--accent:144 35% 91%;--accent-foreground:210 27% 23%;--muted:38 40% 91%;--muted-foreground:210 17% 34%;--border:38 26% 82%;--ring:207 65% 43%;--card:0 0% 100%;--card-foreground:210 27% 23%}
+html,body{background:#f7f0e4!important;color:#283c49}
+body{background-image:none!important}
+section,main section,section:nth-of-type(n){background-color:#f7f0e4!important;background-image:none!important}
+section h1,section h3{color:#22639a}
+section h2{color:#167f83}
+section h4{color:#277a57}
+section :is(p,li){color:#35474d}
+section .text-muted-foreground{color:#58646a!important}
+section :is(.bg-white,.bg-background){background-color:#fffdf9!important}
+section :is(.rounded-xl,.rounded-2xl,.rounded-3xl){border-color:#d8dfd7}
+section :is(.border,.border-2){border-color:#c8ded5}
+section :is(.shadow-lg,.shadow-xl){box-shadow:0 12px 28px rgba(38,85,91,.1)}
+section a[href*="checkout"],section a[class*="bg-"],section button[class*="bg-"]{background:#2877b5!important;color:#fff!important;border-color:#206399!important;box-shadow:0 4px 0 #205e90,0 8px 18px rgba(35,92,145,.13)!important}
+section a[href*="checkout"]:hover,section a[class*="bg-"]:hover,section button[class*="bg-"]:hover{background:#1c659c!important}
+section :is(.text-green-600,.text-green-700,.text-emerald-600){color:#288452!important}
+section :is(.text-teal-600,.text-teal-700){color:#168b89!important}
+section :is(.text-yellow-600,.text-orange-600,.text-red-600){color:#c7524d!important}
+section :is(.bg-green-50,.bg-emerald-50){background:#ebf7ef!important}
+section .bg-teal-50{background:#e5f6f4!important}
+section :is(.bg-yellow-50,.bg-orange-50){background:#fff3ea!important}
+section :is(input,textarea,select){border-color:#8cbab8;accent-color:#2877b5}
+section :is(a,button):focus-visible{outline:3px solid #168b89;outline-offset:3px}
+section img{border-color:#d1ddd8}
+@media(max-width:767px){section :is(h1,h2,h3){text-wrap:balance}}
