@@ -28,3 +28,12 @@
  .kids-page footer p { line-height:1.5; }
 }
 @media(prefers-reduced-motion:reduce){ .kids-page .feedback-kids-track { animation:none!important; overflow-x:auto; } }
+
+/* Apenas as cores dos seis bônus, na ordem solicitada. */
+.kids-page section article.bonus-uniform-card:has(img[alt^="Capa do Bônus 1 "]) { background:#F4CF49!important; color:#46370C!important; border-color:#F4CF49!important; }
+.kids-page section article.bonus-uniform-card:has(img[alt^="Capa do Bônus 2 "]) { background:#BE3D78!important; color:#FFFFFF!important; border-color:#BE3D78!important; }
+.kids-page section article.bonus-uniform-card:has(img[alt^="Capa do Bônus 3 "]) { background:#287D48!important; color:#FFFFFF!important; border-color:#287D48!important; }
+.kids-page section article.bonus-uniform-card:has(img[alt^="Capa do Bônus 4 "]) { background:#193F79!important; color:#FFFFFF!important; border-color:#193F79!important; }
+.kids-page section article.bonus-uniform-card:has(img[alt^="Capa do Bônus 5 "]) { background:#7844A5!important; color:#FFFFFF!important; border-color:#7844A5!important; }
+.kids-page section article.bonus-uniform-card:has(img[alt^="Capa do Bônus 6 "]) { background:#B94D18!important; color:#FFFFFF!important; border-color:#B94D18!important; }
+.kids-page section article.bonus-uniform-card:has(img[alt^="Capa do Bônus"]) :is(h2,h3,h4,p,span,div) { color:inherit!important; }
