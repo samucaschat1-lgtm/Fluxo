@@ -89,7 +89,7 @@ export function ReferencePage() {
       window.location.assign(isPremiumPurchase(button) ? PREMIUM_CHECKOUT_URL : BASIC_CHECKOUT_URL);
     };
     container.current?.addEventListener("click", handlePurchaseClick, true);
-    const moduleUrl = new URL("/reference/site.js?v=20261015-custom-carousel-3", window.location.origin).href;
+    const moduleUrl = new URL("/reference/site.js?v=red-bonuses-20261015", window.location.origin).href;
 
     import(/* @vite-ignore */ moduleUrl)
       .then((module) => {
