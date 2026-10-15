@@ -92,7 +92,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       {
         rel: "stylesheet",
-        href: "/vibrant-theme.css",
+        href: "/vibrant-theme.css?v=red-bonuses-20261015",
       },
     ],
   }),
