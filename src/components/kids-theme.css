@@ -1,0 +1,30 @@
+/* Brinquedos Kids: azul consistente e layout otimizado */
+.kids-page { --kids-blue:#2379bd; --kids-blue-hover:#17649e; --kids-blue-dark:#155783; color:#243849; max-width:100%; overflow-x:clip; }
+.kids-page > * { max-width:100%; }
+.kids-page :is(section,footer) { box-sizing:border-box; }
+.kids-page :is(section,footer) > .container { margin-inline:auto; }
+.kids-page div[class*="bg-[#E53935]"], .kids-page section[class*="bg-[#E53935]"] { background:var(--kids-blue)!important; color:white!important; }
+.kids-page div[class*="bg-[#E53935]"] *, .kids-page section[class*="bg-[#E53935]"] * { color:white!important; }
+.kids-page footer { background:var(--kids-blue)!important; color:white!important; text-align:center; }
+.kids-page footer p, .kids-page footer a, .kids-page footer span { color:#fff!important; opacity:1!important; }
+.kids-page [data-checkout-cta="true"], .kids-page a[href*="ggcheckout"], .kids-page a[href*="#planos"], .kids-page button[class*="bg-"] { background:var(--kids-blue)!important; background-image:none!important; border-color:var(--kids-blue-dark)!important; color:white!important; box-shadow:0 4px 0 var(--kids-blue-dark),0 9px 20px #2379bd24!important; }
+.kids-page [data-checkout-cta="true"]:hover, .kids-page a[href*="ggcheckout"]:hover { background:var(--kids-blue-hover)!important; }
+.kids-page [data-checkout-cta="true"] *, .kids-page a[href*="ggcheckout"] * { color:white!important; }
+.kids-page article:has(img[alt^="Capa do Bônus"]) { background:var(--kids-blue)!important; color:white!important; border:1px solid #8ac5ef!important; border-radius:18px!important; }
+.kids-page article:has(img[alt^="Capa do Bônus"]) :is(h2,h3,h4,p,span,div) { color:white!important; }
+.kids-page article:has(img[alt^="Capa do Bônus"]) img { max-width:100%; object-fit:contain; }
+.kids-page section { max-width:100%; }
+.kids-page section h1,.kids-page section h2,.kids-page section h3 { overflow-wrap:break-word; }
+.kids-page :is(.feedback-kids-track,img) { backface-visibility:hidden; }
+.kids-page img { max-width:100%; }
+.kids-page section .container { width:min(100%,1080px); margin-inline:auto; }
+@media(max-width:767px) {
+ .kids-page section .container { padding-inline:16px; }
+ .kids-page section { overflow-x:clip; }
+ .kids-page article:has(img[alt^="Capa do Bônus"]) { padding:14px 12px!important; max-width:min(100%,420px); margin-inline:auto; }
+ .kids-page article:has(img[alt^="Capa do Bônus"]) img { max-height:180px!important; }
+ .kids-page .feedback-kids-track > div { width:clamp(190px,58vw,250px)!important; min-width:190px!important; }
+ .kids-page footer { padding:28px 16px!important; }
+ .kids-page footer p { line-height:1.5; }
+}
+@media(prefers-reduced-motion:reduce){ .kids-page .feedback-kids-track { animation:none!important; overflow-x:auto; } }
