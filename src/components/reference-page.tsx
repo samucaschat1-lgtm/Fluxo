@@ -48,6 +48,44 @@ function replacePreviewCarousel(root: HTMLElement, previews: string[]): boolean 
   return tracks.every((track) => track.dataset.projectImagesApplied === "yes");
 }
 
+
+const BASIC_CHECKOUT_URL = "https://ggcheckout.app/products-checkout-v2/checkout/37188bd2-cc3a-43d0-b695-cbd0fc08ba13";
+
+/** Identify the Premium purchase control without affecting other purchase CTAs. */
+function isPremiumPurchase(element: HTMLElement): boolean {
+  const ownText = (element.textContent || "").toLowerCase();
+  if (/premium/.test(ownText)) return true;
+  // Plan buttons are usually inside their own plan card.
+  let parent = element.parentElement;
+  for (let depth = 0; parent && depth < 4; depth++, parent = parent.parentElement) {
+    const headings = Array.from(parent.querySelectorAll("h2,h3,h4,h5,strong"));
+    if (headings.some((heading) => /plano\\s*premium|premium/i.test(heading.textContent || "")) &&
+        !headings.some((heading) => /plano\\s*b[aá]sico/i.test(heading.textContent || ""))) {
+      return true;
+    }
+  }
+  return false;
+}
+
+function isPurchaseCTA(element: HTMLElement): boolean {
+  if (element.closest("[data-basic-sticky-cta]")) return false;
+  const label = (element.textContent || "").replace(/\\s+/g, " ").trim();
+  if (label.length > 180) return false;
+  const href = element instanceof HTMLAnchorElement ? element.getAttribute("href") || "" : "";
+  return /ggcheckout|cakto|checkout|#planos/i.test(href) ||
+    /quero|acessar agora|garantir|comprar|começar agora|obter acesso|escolher plano|receber (meu|o) acesso|aproveitar oferta|aproveitar agora/i.test(label);
+}
+
+function redirectBasicCTAs(root: HTMLElement): void {
+  root.querySelectorAll<HTMLElement>("a,button,[role='button']").forEach((element) => {
+    if (!isPurchaseCTA(element) || isPremiumPurchase(element)) return;
+    if (element instanceof HTMLAnchorElement) {
+      if (element.href !== BASIC_CHECKOUT_URL) element.href = BASIC_CHECKOUT_URL;
+    }
+    element.dataset.basicCheckoutCta = "true";
+  });
+}
+
 export function ReferencePage() {
   const container = useRef<HTMLDivElement>(null);
   const [failed, setFailed] = useState(false);
@@ -56,6 +94,17 @@ export function ReferencePage() {
     let cancelled = false;
     let unmount: (() => void) | undefined;
     let observer: MutationObserver | undefined;
+    const handlePurchaseClick = (event: MouseEvent) => {
+      const target = event.target;
+      if (!(target instanceof Element) || !container.current) return;
+      const button = target.closest<HTMLElement>("a,button,[role='button']");
+      if (!button || !container.current.contains(button) ||
+          !isPurchaseCTA(button) || isPremiumPurchase(button)) return;
+      event.preventDefault();
+      event.stopPropagation();
+      window.location.assign(BASIC_CHECKOUT_URL);
+    };
+    container.current?.addEventListener("click", handlePurchaseClick, true);
     const moduleUrl = new URL("/reference/site.js", window.location.origin).href;
 
     import(/* @vite-ignore */ moduleUrl)
@@ -65,10 +114,14 @@ export function ReferencePage() {
         if (container.current) {
           unmount = module.mountReferencePage(container.current);
           observer = new MutationObserver(() => {
-            if (container.current && replacePreviewCarousel(container.current, previews)) observer?.disconnect();
+            if (container.current) {
+              replacePreviewCarousel(container.current, previews);
+              redirectBasicCTAs(container.current);
+            }
           });
           observer.observe(container.current, { childList: true, subtree: true });
-          if (replacePreviewCarousel(container.current, previews)) observer.disconnect();
+          replacePreviewCarousel(container.current, previews);
+          redirectBasicCTAs(container.current);
         }
       })
       .catch((error) => {
@@ -83,12 +136,20 @@ export function ReferencePage() {
     return () => {
       cancelled = true;
       observer?.disconnect();
+      container.current?.removeEventListener("click", handlePurchaseClick, true);
       unmount?.();
     };
   }, []);
 
   return <>
     <div ref={container} />
+    <div data-basic-sticky-cta className="basic-sticky-offer" role="region" aria-label="Oferta do Plano Básico">
+      <div className="basic-sticky-offer__info">
+        <span className="basic-sticky-offer__label">Plano Básico • Acesso digital</span>
+        <strong>Por apenas R$ 10,00</strong>
+      </div>
+      <a href={BASIC_CHECKOUT_URL} className="basic-sticky-offer__button">QUERO GARANTIR <span aria-hidden="true">→</span></a>
+    </div>
     {failed && <p role="alert">Não foi possível carregar a página. <a href="/">Tentar novamente</a></p>}
   </>;
 }
