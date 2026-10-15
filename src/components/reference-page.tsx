@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 
 function repairBonusImages(root: HTMLElement): void {
   root.querySelectorAll<HTMLImageElement>('img[alt^="Capa do Bônus"]').forEach((img) => {
-    const match = img.alt.match(/Bônus\\s+(\\d+)/i);
+    const match = img.alt.match(/Bônus\s+(\d+)/i);
     if (!match) return;
     const number = Number(match[1]);
     if (number < 1 || number > 6) return;
