@@ -88,7 +88,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       {
         rel: "stylesheet",
-        href: "/basic-sticky-offer.css",
+        href: "/layout-fixes.css",
       },
     ],
   }),
