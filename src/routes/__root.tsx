@@ -81,7 +81,20 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
-
+    links: [
+      {
+        rel: "stylesheet",
+        href: "/reference/site.css",
+      },
+      {
+        rel: "stylesheet",
+        href: "/layout-fixes.css",
+      },
+      {
+        rel: "stylesheet",
+        href: "/vibrant-theme.css?v=red-bonuses-20261015",
+      },
+    ],
   }),
   shellComponent: RootShell,
   component: RootComponent,
