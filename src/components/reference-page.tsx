@@ -37,18 +37,13 @@ const PREMIUM_CHECKOUT_URL = "https://ggcheckout.app/checkout/v5/42268e97-5e14-4
 
 /** Identify the Premium purchase control without affecting other purchase CTAs. */
 function isPremiumPurchase(element: HTMLElement): boolean {
-  const ownText = (element.textContent || "").toLowerCase();
-  if (/premium/i.test(ownText)) return true;
-  // Restrict matching to a plan card; avoid identifying the whole plans section.
-  let parent = element.parentElement;
-  for (let depth = 0; parent && depth < 5; depth++, parent = parent.parentElement) {
-    const text = (parent.textContent || "").toLowerCase();
-    const hasPremium = /(?:plano\s*)?premium/i.test(text);
-    const hasBasic = /plano\s*b[aá]sico/i.test(text);
-    if (hasPremium && !hasBasic && parent.querySelectorAll("a,button").length <= 3) return true;
-    if (hasBasic) break;
-  }
-  return false;
+  // The Premium card is labeled "Plano Completo" in the current page.
+  if (element.closest("#plano-completo")) return true;
+  const ownText = (element.textContent || "").replace(/\s+/g, " ").trim();
+  if (/premium|plano\s+completo/i.test(ownText)) return true;
+  const card = element.closest("article");
+  const heading = card?.querySelector("h2,h3,h4")?.textContent || "";
+  return /premium|plano\s+completo/i.test(heading);
 }
 
 function isPurchaseCTA(element: HTMLElement): boolean {
