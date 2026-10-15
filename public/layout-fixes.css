@@ -1,0 +1,20 @@
+/* Responsive layout correction: respects existing backgrounds and design. */
+html,body{max-width:100%;overflow-x:clip}
+body{padding-bottom:0!important}
+#root,main{min-width:0}
+main section,section{max-width:100%;box-sizing:border-box}
+section>div,main>div{min-width:0}
+section .mx-auto, main .mx-auto{margin-left:auto!important;margin-right:auto!important}
+section img, main img, section video, main video{max-width:100%;height:auto}
+section img{object-position:center}
+section .grid>*,main .grid>*{min-width:0}
+section .flex>*,main .flex>*{min-width:0}
+section h1,section h2,section h3,section p{overflow-wrap:break-word}
+section [style*="animation"]{will-change:transform;backface-visibility:hidden}
+@media(max-width:767px){
+  section{max-width:100%;overflow-x:clip}
+  section>.container,section>div.max-w-7xl,section>div.max-w-6xl,section>div.max-w-5xl,section>div.max-w-4xl{width:100%;max-width:100%;padding-left:16px!important;padding-right:16px!important;box-sizing:border-box}
+  section .grid{gap:clamp(12px,3vw,22px)}
+  section img{object-fit:contain}
+}
+@media(prefers-reduced-motion:reduce){section [style*="animation"]{animation-duration:0.01ms!important;animation-iteration-count:1!important}}
