@@ -1,0 +1,31 @@
+/* Brinquedos Kids — palette 2026: electric violet, aqua, coral, sunshine. */
+:root{--background:250 100% 98%;--foreground:245 37% 19%;--primary:262 84% 52%;--primary-foreground:0 0% 100%;--secondary:185 90% 92%;--secondary-foreground:245 37% 19%;--accent:15 100% 91%;--accent-foreground:245 37% 19%;--muted:258 80% 95%;--muted-foreground:245 24% 35%;--border:264 66% 83%;--ring:262 84% 52%;--card:0 0% 100%;--card-foreground:245 37% 19%}
+html,body{background:#f9f5ff;color:#292043}
+body{background:linear-gradient(180deg,#eafaff 0%,#fff3fc 45%,#f9f5ff 100%)}
+section{position:relative}
+section:nth-of-type(6n+1){background-color:#eefcff!important}
+section:nth-of-type(6n+2){background-color:#fff0fa!important}
+section:nth-of-type(6n+3){background-color:#fff8dc!important}
+section:nth-of-type(6n+4){background-color:#efe9ff!important}
+section:nth-of-type(6n+5){background-color:#edfff2!important}
+section:nth-of-type(6n){background-color:#ffecea!important}
+section :is(h1,h2,h3,h4){color:#342052}
+section h1{color:#392083}
+section h2{color:#5d29ba}
+section :is(p,li){color:#3c3156}
+section :is(.text-muted-foreground){color:#59496b!important}
+section :is(.bg-white,.bg-background){background-color:#fff!important}
+section :is(.rounded-xl,.rounded-2xl,.rounded-3xl,.rounded-\[26px\]){border-color:#d9c9ff}
+section :is(.border,.border-2){border-color:#cfbafc}
+section :is(.shadow-lg,.shadow-xl){box-shadow:0 14px 32px rgba(111,63,190,.14)}
+section a[href*="checkout"],section button[class*="bg-"],section a[class*="bg-"]{background:#7034de!important;color:#fff!important;border-color:#5521b7!important;box-shadow:0 5px 0 #4d21a2,0 10px 20px rgba(102,57,180,.18)!important}
+section a[href*="checkout"]:hover,section button[class*="bg-"]:hover,section a[class*="bg-"]:hover{background:#5723bb!important}
+section :is(.text-green-600,.text-green-700,.text-emerald-600,.text-teal-600){color:#7a2ce0!important}
+section :is(.text-yellow-600,.text-orange-600){color:#ed4f66!important}
+section :is(.bg-green-50,.bg-emerald-50,.bg-teal-50){background:#e9faff!important}
+section :is(.bg-yellow-50,.bg-orange-50){background:#fff0db!important}
+section svg:not([fill="none"]){color:inherit}
+section :is(input,textarea,select){border-color:#aa8cec;accent-color:#7c3aed}
+section :is(a,button):focus-visible{outline:3px solid #ff5c7f;outline-offset:3px}
+section img{border-color:#decfff}
+@media(max-width:767px){section:nth-of-type(n){background-image:none}section :is(h1,h2,h3){text-wrap:balance}}
