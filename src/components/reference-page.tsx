@@ -140,8 +140,7 @@ export function ReferencePage() {
               if (!container.current || cancelled) return;
               redirectBasicCTAs(container.current);
               restoreMyCarousel(container.current);
-              restoreMyCarousel(container.current);
-          optimizeImages(container.current);
+              optimizeImages(container.current);
             });
           });
           observer.observe(container.current, { childList: true, subtree: true });
