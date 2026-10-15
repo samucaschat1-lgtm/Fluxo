@@ -1,9 +1,9 @@
 /* Brinquedos Kids: one warm beige background with restrained colorful accents */
-:root{--background:40 56% 95%;--foreground:210 27% 23%;--primary:207 65% 43%;--primary-foreground:0 0% 100%;--secondary:175 38% 90%;--secondary-foreground:210 27% 23%;--accent:144 35% 91%;--accent-foreground:210 27% 23%;--muted:38 40% 91%;--muted-foreground:210 17% 34%;--border:38 26% 82%;--ring:207 65% 43%;--card:0 0% 100%;--card-foreground:210 27% 23%}
+:root{--background:40 56% 95%;--foreground:210 27% 23%;--primary:357 57% 52%;--primary-foreground:0 0% 100%;--secondary:175 38% 90%;--secondary-foreground:210 27% 23%;--accent:144 35% 91%;--accent-foreground:210 27% 23%;--muted:38 40% 91%;--muted-foreground:210 17% 34%;--border:38 26% 82%;--ring:357 57% 52%;--card:0 0% 100%;--card-foreground:210 27% 23%}
 html,body{background:#f7f0e4!important;color:#283c49}
 body{background-image:none!important}
 section,main section,section:nth-of-type(n){background-color:#f7f0e4!important;background-image:none!important}
-section h1,section h3{color:#22639a}
+section h1,section h3{color:#b73a40}
 section h2{color:#167f83}
 section h4{color:#277a57}
 section :is(p,li){color:#35474d}
@@ -12,15 +12,24 @@ section :is(.bg-white,.bg-background){background-color:#fffdf9!important}
 section :is(.rounded-xl,.rounded-2xl,.rounded-3xl){border-color:#d8dfd7}
 section :is(.border,.border-2){border-color:#c8ded5}
 section :is(.shadow-lg,.shadow-xl){box-shadow:0 12px 28px rgba(38,85,91,.1)}
-section a[href*="checkout"],section a[class*="bg-"],section button[class*="bg-"]{background:#2877b5!important;color:#fff!important;border-color:#206399!important;box-shadow:0 4px 0 #205e90,0 8px 18px rgba(35,92,145,.13)!important}
-section a[href*="checkout"]:hover,section a[class*="bg-"]:hover,section button[class*="bg-"]:hover{background:#1c659c!important}
+section a[href*="checkout"],section a[class*="bg-"],section button[class*="bg-"]{background:#c93e45!important;color:#fff!important;border-color:#a53036!important;box-shadow:0 4px 0 #9a2b31,0 8px 18px rgba(35,92,145,.13)!important}
+section a[href*="checkout"]:hover,section a[class*="bg-"]:hover,section button[class*="bg-"]:hover{background:#af3037!important}
 section :is(.text-green-600,.text-green-700,.text-emerald-600){color:#288452!important}
 section :is(.text-teal-600,.text-teal-700){color:#168b89!important}
 section :is(.text-yellow-600,.text-orange-600,.text-red-600){color:#c7524d!important}
 section :is(.bg-green-50,.bg-emerald-50){background:#ebf7ef!important}
 section .bg-teal-50{background:#e5f6f4!important}
 section :is(.bg-yellow-50,.bg-orange-50){background:#fff3ea!important}
-section :is(input,textarea,select){border-color:#8cbab8;accent-color:#2877b5}
+section :is(input,textarea,select){border-color:#d4a0a0;accent-color:#c93e45}
 section :is(a,button):focus-visible{outline:3px solid #168b89;outline-offset:3px}
 section img{border-color:#d1ddd8}
 @media(max-width:767px){section :is(h1,h2,h3){text-wrap:balance}}
+
+/* Six bonus cards, six independent gentle colors; preserve page beige. */
+section article:has(img[alt^="Capa do Bônus 1"]){background:#f8dcd9!important;color:#713330!important;border:1px solid #e4aba6}
+section article:has(img[alt^="Capa do Bônus 2"]){background:#dceef9!important;color:#28546f!important;border:1px solid #a8cee6}
+section article:has(img[alt^="Capa do Bônus 3"]){background:#ddf1df!important;color:#295d39!important;border:1px solid #a8d3b0}
+section article:has(img[alt^="Capa do Bônus 4"]){background:#d9f1ee!important;color:#235d5a!important;border:1px solid #a5d5ce}
+section article:has(img[alt^="Capa do Bônus 5"]){background:#f7e6bf!important;color:#735526!important;border:1px solid #e6cea0}
+section article:has(img[alt^="Capa do Bônus 6"]){background:#ecdef4!important;color:#5c3972!important;border:1px solid #d2b3e1}
+section article:has(img[alt^="Capa do Bônus"]) :is(h3,h4){color:inherit!important}
