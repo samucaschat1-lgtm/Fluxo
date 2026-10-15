@@ -147,6 +147,7 @@ export function ReferencePage() {
           observer.observe(container.current, { childList: true, subtree: true });
           replacePreviewCarousel(container.current, previews);
           redirectBasicCTAs(container.current);
+          optimizeImages(container.current);
         }
       })
       .catch((error) => {
