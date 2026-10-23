@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import {
+  Cell,
   Area,
   AreaChart,
   Bar,
@@ -44,8 +45,10 @@ import {
   exportCSV,
 } from "./model";
 import type { Entry, Ledger, Settings } from "./model";
+import { CashModal } from "./CashModal";
+import { Integrations } from "./Integrations";
 const STORAGE = "fluxo-financeiro-v1";
-type Tab = "overview" | "ledger" | "year" | "settings";
+type Tab = "overview" | "ledger" | "year" | "settings" | "integrations";
 function download(name: string, content: string, type: string) {
   const url = URL.createObjectURL(new Blob([content], { type }));
   const a = document.createElement("a");
@@ -80,6 +83,7 @@ export function FinanceApp() {
   const [originalDate, setOriginalDate] = useState<string | null>(null);
   const [message, setMessage] = useState("");
   const [help, setHelp] = useState(false);
+  const [cashMode, setCashMode] = useState<"balance" | "withdrawal" | null>(null);
   const file = useRef<HTMLInputElement>(null);
   useEffect(() => {
     try {
@@ -211,6 +215,7 @@ export function FinanceApp() {
               { id: "ledger", icon: List, label: "Lançamentos" },
               { id: "year", icon: CalendarDays, label: "Visão anual" },
               { id: "settings", icon: Settings2, label: "Configurações" },
+              { id: "integrations", icon: Database, label: "Integrações" },
             ] as const
           ).map((n) => (
             <button
@@ -267,7 +272,9 @@ export function FinanceApp() {
                     ? "Seu ano, em perspectiva"
                     : tab === "settings"
                       ? "Do seu jeito"
-                      : "Cada número, uma decisão."}
+                      : tab === "integrations"
+                        ? "Suas fontes de dados"
+                        : "Cada número, uma decisão."}
               </h1>
               <p>
                 {tab === "settings"
@@ -292,7 +299,7 @@ export function FinanceApp() {
               </button>
             </div>
           )}
-          {tab !== "settings" && (
+          {tab !== "settings" && tab !== "integrations" && (
             <>
               <div className="toolbar">
                 <div className="period">
@@ -395,10 +402,23 @@ export function FinanceApp() {
                 <Metric
                   title="Saldo após retiradas"
                   value={money(t.balance)}
-                  subtitle={`${money(t.withdrawal)} retirados no período`}
+                  subtitle={`${money(t.withdrawal)} retirados · ${money(t.adjustment)} em ajustes`}
                   icon={<Wallet size={18} />}
                 />
               </section>
+              <div className="cash-actions">
+                <button className="secondary" onClick={() => setCashMode("balance")}>
+                  <Pencil size={15} />
+                  Editar saldo após retiradas
+                </button>
+                <button className="secondary" onClick={() => setCashMode("withdrawal")}>
+                  <Wallet size={15} />
+                  Editar retirada
+                </button>
+                <span className="muted">
+                  Ajustes de saldo e retiradas não alteram lucro, CPA ou ticket.
+                </span>
+              </div>
               {recorded === 0 ? (
                 <section className="empty">
                   <CalendarDays size={35} />
@@ -429,67 +449,49 @@ export function FinanceApp() {
                               <p>
                                 {annual
                                   ? "Comparação entre os meses registrados"
-                                  : "Faturamento e custos, dia a dia"}
+                                  : "Lucro diário: verde para cima, prejuízo vermelho para baixo"}
                               </p>
                             </div>
                             <div className="legend">
                               <span className="green-dot" />
-                              Receita <span className="gray-dot" />
-                              Custos
+                              Lucro <span className="red-dot" />
+                              Prejuízo
                             </div>
                           </div>
                           <div className="chart">
                             <ResponsiveContainer width="100%" height="100%">
-                              <AreaChart
+                              <BarChart
                                 data={chart}
                                 margin={{ left: 0, right: 12, top: 15, bottom: 0 }}
                               >
-                                <defs>
-                                  <linearGradient id="rev" x1="0" y1="0" x2="0" y2="1">
-                                    <stop offset="0%" stopColor="#139b70" stopOpacity={0.2} />
-                                    <stop offset="100%" stopColor="#139b70" stopOpacity={0} />
-                                  </linearGradient>
-                                </defs>
                                 <CartesianGrid
                                   vertical={false}
                                   stroke="#e9eeec"
                                   strokeDasharray="3 4"
                                 />
-                                <XAxis
-                                  dataKey="name"
-                                  tickLine={false}
-                                  axisLine={false}
-                                  tick={{ fontSize: 11, fill: "#84908b" }}
-                                />
-                                <YAxis
-                                  width={52}
-                                  tickLine={false}
-                                  axisLine={false}
-                                  tickFormatter={(v) =>
-                                    `${v >= 1000 ? (v / 1000).toFixed(1) + "k" : v}`
-                                  }
-                                  tick={{ fontSize: 11, fill: "#84908b" }}
-                                />
+                                <XAxis dataKey="name" tickLine={false} axisLine={false} />
+                                <YAxis width={64} tickLine={false} axisLine={false} />
                                 <Tooltip
                                   formatter={(v: number) => money(v)}
                                   labelFormatter={(v) => (annual ? v : `Dia ${v}`)}
-                                  contentStyle={{ borderRadius: 12, border: "1px solid #e3e8e5" }}
+                                  cursor={{ fill: "#f3f7f4" }}
                                 />
-                                <Area
-                                  type="monotone"
-                                  dataKey="Receita"
-                                  stroke="#139b70"
-                                  strokeWidth={2.5}
-                                  fill="url(#rev)"
-                                />
-                                <Area
-                                  type="monotone"
-                                  dataKey="Custos"
-                                  stroke="#a7b2ad"
-                                  strokeWidth={2}
-                                  fill="transparent"
-                                />
-                              </AreaChart>
+                                <ReferenceLine y={0} stroke="#758d7f" strokeWidth={1.5} />
+                                <Bar dataKey="Lucro" maxBarSize={32}>
+                                  {chart.map((r) => (
+                                    <Cell
+                                      key={r.name}
+                                      fill={
+                                        r.Lucro < 0
+                                          ? "#d65b59"
+                                          : r.Lucro > 0
+                                            ? "#139b70"
+                                            : "#95a59b"
+                                      }
+                                    />
+                                  ))}
+                                </Bar>
+                              </BarChart>
                             </ResponsiveContainer>
                           </div>
                         </section>
@@ -630,7 +632,10 @@ export function FinanceApp() {
                                 "Lucro",
                                 "Acumulado",
                                 "Retiradas",
+                                "Ajuste de saldo",
                                 "Pedidos",
+                                "CPA",
+                                "Ticket médio",
                                 "",
                               ].map((x, i) => (
                                 <th key={i}>{x}</th>
@@ -657,12 +662,24 @@ export function FinanceApp() {
                                     <td>{money(e.fee)}</td>
                                     <td>{money(e.other)}</td>
                                     <td>{money(e.refunds)}</td>
-                                    <td className={p >= 0 ? "positive" : "negative"}>{money(p)}</td>
+                                    <td className={p >= 0 ? "positive" : "negative"}>
+                                      <span className="signed-result">
+                                        {p < 0 ? (
+                                          <ArrowDownLeft size={13} />
+                                        ) : p > 0 ? (
+                                          <ArrowUpRight size={13} />
+                                        ) : null}
+                                        {money(p)}
+                                      </span>
+                                    </td>
                                     <td className={acc >= 0 ? "positive" : "negative"}>
                                       {money(acc)}
                                     </td>
                                     <td>{money(e.withdrawal)}</td>
+                                    <td>{money(e.balanceAdjustment ?? 0)}</td>
                                     <td>{e.orders ?? "—"}</td>
+                                    <td>{e.orders ? money(e.spend / e.orders) : "—"}</td>
+                                    <td>{e.orders ? money(e.revenue / e.orders) : "—"}</td>
                                     <td>
                                       <button
                                         className="edit-button"
@@ -689,7 +706,10 @@ export function FinanceApp() {
                               <td>{money(t.profit)}</td>
                               <td>{money(t.profit)}</td>
                               <td>{money(t.withdrawal)}</td>
+                              <td>{money(t.adjustment)}</td>
                               <td>{t.orders ?? "—"}</td>
+                              <td>{t.cpa === null ? "—" : money(t.cpa)}</td>
+                              <td>{t.ticket === null ? "—" : money(t.ticket)}</td>
                               <td />
                             </tr>
                           </tfoot>
@@ -713,7 +733,16 @@ export function FinanceApp() {
                             <YAxis width={55} axisLine={false} tickLine={false} />
                             <Tooltip formatter={(v: number) => money(v)} />
                             <ReferenceLine y={0} stroke="#aab6af" />
-                            <Bar dataKey="Lucro" fill="#139b70" radius={[3, 3, 0, 0]} />
+                            <Bar dataKey="Lucro">
+                              {chart.map((r) => (
+                                <Cell
+                                  key={r.name}
+                                  fill={
+                                    r.Lucro < 0 ? "#d65b59" : r.Lucro > 0 ? "#139b70" : "#95a59b"
+                                  }
+                                />
+                              ))}
+                            </Bar>
                           </BarChart>
                         </ResponsiveContainer>
                       </div>
@@ -788,12 +817,34 @@ export function FinanceApp() {
               </section>
             </div>
           )}
+          {tab === "integrations" && <Integrations />}
           <footer>
             fluxo. <span>Seu financeiro, com clareza.</span>
             <button onClick={() => setHelp(true)}>Como calculamos</button>
           </footer>
         </main>
       </div>
+      {cashMode && (
+        <CashModal
+          mode={cashMode}
+          entries={selected}
+          fallbackDate={prefix + "-01"}
+          close={() => setCashMode(null)}
+          save={(entry) => {
+            try {
+              validateLedger({ ...ledger, entries: [entry] });
+              setLedger((l) => ({
+                ...l,
+                entries: [...l.entries.filter((e) => e.date !== entry.date), entry],
+              }));
+              setCashMode(null);
+              setMessage("Saldo atualizado. O lucro da operação foi preservado.");
+            } catch (error) {
+              setMessage((error as Error).message);
+            }
+          }}
+        />
+      )}
       {editing && (
         <EntryModal
           entry={editing}
@@ -833,7 +884,10 @@ export function FinanceApp() {
               <dt>Lucro operacional</dt>
               <dd>Faturamento bruto − reembolsos − custo total.</dd>
               <dt>Saldo após retiradas</dt>
-              <dd>Lucro do período − retiradas do período. Não representa saldo bancário.</dd>
+              <dd>
+                Lucro do período + ajustes de saldo − retiradas do período. O saldo é do período
+                selecionado; não representa conciliação bancária.
+              </dd>
               <dt>Margem</dt>
               <dd>Lucro ÷ faturamento bruto × 100.</dd>
               <dt>ROI</dt>
@@ -1030,6 +1084,18 @@ function EntryModal({
               />
             </label>
           ))}
+          <label>
+            Ajuste de saldo (R$)
+            <input
+              type="number"
+              min="-1000000000"
+              max="1000000000"
+              step="0.01"
+              required
+              value={e.balanceAdjustment ?? 0}
+              onChange={(ev) => set({ ...e, balanceAdjustment: Number(ev.target.value) })}
+            />
+          </label>
           <label>
             Pedidos aprovados
             <input

@@ -7,6 +7,7 @@ export type Entry = {
   other: number;
   refunds: number;
   withdrawal: number;
+  balanceAdjustment?: number;
   orders: number | null;
   note: string;
 };
@@ -42,7 +43,8 @@ export function totals(entries: Entry[]) {
     fee = sum("fee"),
     other = sum("other"),
     refunds = sum("refunds"),
-    withdrawal = sum("withdrawal");
+    withdrawal = sum("withdrawal"),
+    adjustment = sum("balanceAdjustment");
   const cost = round(spend + tax + fee + other),
     profit = round(revenue - refunds - cost);
   const ordersKnown = entries.length > 0 && entries.every((e) => e.orders !== null);
@@ -57,7 +59,8 @@ export function totals(entries: Entry[]) {
     withdrawal,
     cost,
     profit,
-    balance: round(profit - withdrawal),
+    adjustment,
+    balance: round(profit + adjustment - withdrawal),
     margin: revenue > 0 ? (profit / revenue) * 100 : null,
     roi: cost > 0 ? (profit / cost) * 100 : null,
     roas: spend > 0 ? revenue / spend : null,
@@ -146,6 +149,13 @@ export function validateLedger(value: unknown): Ledger {
       throw new Error("Datas inválidas ou duplicadas no backup.");
     seen.add(e.date);
     if (
+      e.balanceAdjustment !== undefined &&
+      (typeof e.balanceAdjustment !== "number" ||
+        !Number.isFinite(e.balanceAdjustment) ||
+        Math.abs(e.balanceAdjustment) > 1e9)
+    )
+      throw new Error("Ajuste de saldo inválido.");
+    if (
       keys.some(
         (k) => typeof e[k] !== "number" || !Number.isFinite(e[k]) || e[k] < 0 || e[k] > 1e9,
       ) ||
@@ -167,7 +177,7 @@ export function validateLedger(value: unknown): Ledger {
 }
 export function exportCSV(entries: Entry[]) {
   const header =
-    "Data;Faturamento bruto;Gastos em anúncios;Impostos;Taxas;Outros custos;Reembolsos;Lucro;Retiradas;Pedidos aprovados";
+    "Data;Faturamento bruto;Gastos em anúncios;Impostos;Taxas;Outros custos;Reembolsos;Lucro;Retiradas;Ajuste de saldo;Pedidos aprovados";
   return (
     "\ufeff" +
     header +
@@ -186,6 +196,7 @@ export function exportCSV(entries: Entry[]) {
             e.refunds,
             result(e).profit,
             e.withdrawal,
+            e.balanceAdjustment ?? 0,
           ].map((n) => n.toFixed(2).replace(".", ",")),
           e.orders ?? "",
         ].join(";"),

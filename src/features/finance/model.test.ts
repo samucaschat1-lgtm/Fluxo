@@ -51,6 +51,16 @@ describe("Financeiro em centavos", () => {
   });
   it("exporta CSV em formato brasileiro com contagem desconhecida vazia", () => {
     const csv = exportCSV(initialLedger().entries);
-    expect(csv).toContain("2026-10-01;0,00;9,01;1,25;0,00;0,00;0,00;-10,26;0,00;");
+    expect(csv).toContain("2026-10-01;0,00;9,01;1,25;0,00;0,00;0,00;-10,26;0,00;0,00;");
   });
+});
+
+it("ajustes positivos e negativos alteram apenas saldo e sobrevivem ao backup", () => {
+  const data = initialLedger();
+  const e = { ...data.entries[0]!, balanceAdjustment: 100, withdrawal: 20 };
+  expect(totals([e])).toMatchObject({ profit: -10.26, balance: 69.74 });
+  expect(totals([{ ...e, balanceAdjustment: -100 }]).balance).toBe(-130.26);
+  expect(validateLedger({ ...data, entries: [e] }).entries[0]?.balanceAdjustment).toBe(100);
+  expect(() => validateLedger({ ...data, entries: [{ ...e, balanceAdjustment: NaN }] })).toThrow();
+  expect(exportCSV([e])).toContain("Ajuste de saldo");
 });

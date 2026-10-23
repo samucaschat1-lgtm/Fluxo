@@ -1145,3 +1145,45 @@ footer button {
     font-size: 10px;
   }
 }
+.cash-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: -6px 0 22px;
+}
+.signed-result {
+  display: inline-flex;
+  gap: 4px;
+  align-items: center;
+}
+.red-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #d65b59;
+  margin-left: 10px;
+}
+.settings-panel ol {
+  padding-left: 20px;
+  color: #677e6f;
+  line-height: 1.9;
+  font-size: 12px;
+}
+@media (max-width: 640px) {
+  nav {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+  nav button {
+    flex: 1 0 29%;
+  }
+  .cash-actions {
+    gap: 8px;
+  }
+  .cash-actions > .muted {
+    width: 100%;
+    font-size: 9px;
+  }
+}

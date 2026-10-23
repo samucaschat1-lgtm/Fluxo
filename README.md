@@ -21,7 +21,7 @@ UTMify e GG Checkout não estão conectadas automaticamente. Os valores precisam
 ## Cálculos
 Custo total = anúncios + impostos + taxas + outros custos.
 Lucro = faturamento − reembolsos − custo total.
-Saldo após retiradas = lucro − retiradas (não representa saldo bancário).
+Saldo após retiradas = lucro + ajustes de saldo − retiradas (não representa saldo bancário).
 Margem = lucro/faturamento; ROI = lucro/custo total; ROAS = faturamento/anúncios.
 CPA = anúncios/pedidos aprovados; ticket médio = faturamento/pedidos aprovados. Exibidos apenas com contagem informada em todos os registros do período e denominador positivo.
 
@@ -35,3 +35,8 @@ npm run build
 npm test
 npx tsc --noEmit
 ```
+
+## Ajustes e integrações (23/10/2026)
+O atalho Editar saldo após retiradas registra a diferença como ajuste na data escolhida. Não modifica faturamento, lucro, CPA ou ticket. Editar retirada substitui o total retirado do dia. Ambos exigem motivo; ajustes entram no backup JSON e CSV. O saldo é do período filtrado, sem transporte automático de saldo entre meses.
+Gráficos de resultado usam barras verdes acima de zero e vermelhas abaixo; pedidos aprovados habilitam CPA e ticket também por dia.
+A tela Integrações documenta o estado real, ainda desconectado. Não existe endpoint de webhook em produção. Para ativar: backend autenticado e persistente, segredos no servidor, validação do payload real e leitura oficial dos gastos. Documentação GG consultada: https://docs.ggcheckout.com/help/vendedor/integracoes/estrutura-do-payload-do-webhook e https://github.com/ggCheckout/ggcheckout-mcp — há divergência sobre centavos versus reais e eventos de reembolso. Não inferir a unidade pelo tamanho do número. Não duplicar pagamentos ao somar fontes nem somar o valor do bump ao total de um pedido que já o contém. Reenvios exigem idempotência por ID de pagamento; a data financeira deve respeitar America/Sao_Paulo. A documentação pública de leitura de gastos da UTMify não foi localizada.
