@@ -419,7 +419,16 @@ export function FinanceApp() {
                   Ajustes de saldo e retiradas não alteram lucro, CPA ou ticket.
                 </span>
               </div>
-              {recorded === 0 ? (
+              {recorded === 0 && !annual && (
+                <section className="month-empty-note">
+                  <h2>Um período para começar.</h2>
+                  <p>
+                    Escolha um dia abaixo para adicionar seu lançamento. Dias vazios não entram nos
+                    cálculos.
+                  </p>
+                </section>
+              )}
+              {recorded === 0 && annual ? (
                 <section className="empty">
                   <CalendarDays size={35} />
                   <h2>Um período para começar.</h2>
@@ -522,7 +531,7 @@ export function FinanceApp() {
                             <span>
                               Média registrada
                               <strong className={t.profit >= 0 ? "positive" : "negative"}>
-                                {money(t.profit / recorded)}
+                                {recorded ? money(t.profit / recorded) : "—"}
                               </strong>
                             </span>
                           </div>
@@ -611,18 +620,19 @@ export function FinanceApp() {
                         <div>
                           <h2>{tab === "overview" ? "Por trás dos números" : "Planilha do mês"}</h2>
                           <p>
-                            {months[month]} de {year} · valores em reais · clique no lápis para
-                            editar
+                            {months[month]} de {year} · edite os valores de cada dia ou preencha os
+                            dias vazios
                           </p>
                         </div>
                         <span className="badge">{selected.length} lançamentos</span>
                       </div>
-                      <div className="table-wrap">
+                      <div className="table-wrap daily-table">
                         <table>
                           <thead>
                             <tr>
                               {[
                                 "Dia",
+                                "Ações",
                                 "Faturamento",
                                 "Anúncios",
                                 "Impostos",
@@ -636,7 +646,6 @@ export function FinanceApp() {
                                 "Pedidos",
                                 "CPA",
                                 "Ticket médio",
-                                "",
                               ].map((x, i) => (
                                 <th key={i}>{x}</th>
                               ))}
@@ -645,7 +654,36 @@ export function FinanceApp() {
                           <tbody>
                             {(() => {
                               let acc = 0;
-                              return selected.map((e) => {
+                              return Array.from({ length: days }, (_, i) => {
+                                const date = `${prefix}-${String(i + 1).padStart(2, "0")}`;
+                                const e = selected.find((entry) => entry.date === date);
+                                if (!e)
+                                  return (
+                                    <tr key={date} className="unfilled-day">
+                                      <td>
+                                        <strong>{String(i + 1).padStart(2, "0")}</strong>
+                                        <small className="day-month">
+                                          /{String(month + 1).padStart(2, "0")}
+                                        </small>
+                                      </td>
+                                      <td className="day-actions">
+                                        <button
+                                          className="day-add"
+                                          aria-label={`Adicionar lançamento dia ${String(i + 1).padStart(2, "0")}`}
+                                          onClick={() => {
+                                            setOriginalDate(null);
+                                            setEditing(zeroEntry(date));
+                                          }}
+                                        >
+                                          <Plus size={14} />
+                                          Adicionar lançamento
+                                        </button>
+                                      </td>
+                                      <td colSpan={13} className="empty-day-label">
+                                        Sem lançamento · não incluído nos totais
+                                      </td>
+                                    </tr>
+                                  );
                                 const p = result(e).profit;
                                 acc = round(acc + p);
                                 return (
@@ -655,6 +693,16 @@ export function FinanceApp() {
                                       <small className="day-month">
                                         /{String(month + 1).padStart(2, "0")}
                                       </small>
+                                    </td>
+                                    <td className="day-actions">
+                                      <button
+                                        className="day-edit"
+                                        aria-label={`Editar dia ${e.date.slice(8)}`}
+                                        onClick={() => begin(e)}
+                                      >
+                                        <Pencil size={14} />
+                                        Editar dia
+                                      </button>
                                     </td>
                                     <td>{money(e.revenue)}</td>
                                     <td>{money(e.spend)}</td>
@@ -680,15 +728,6 @@ export function FinanceApp() {
                                     <td>{e.orders ?? "—"}</td>
                                     <td>{e.orders ? money(e.spend / e.orders) : "—"}</td>
                                     <td>{e.orders ? money(e.revenue / e.orders) : "—"}</td>
-                                    <td>
-                                      <button
-                                        className="edit-button"
-                                        aria-label={`Editar dia ${e.date.slice(8)}`}
-                                        onClick={() => begin(e)}
-                                      >
-                                        <Pencil size={14} />
-                                      </button>
-                                    </td>
                                   </tr>
                                 );
                               });
@@ -697,6 +736,7 @@ export function FinanceApp() {
                           <tfoot>
                             <tr>
                               <td>Total</td>
+                              <td>{selected.length} dias preenchidos</td>
                               <td>{money(t.revenue)}</td>
                               <td>{money(t.spend)}</td>
                               <td>{money(t.tax)}</td>
@@ -710,7 +750,6 @@ export function FinanceApp() {
                               <td>{t.orders ?? "—"}</td>
                               <td>{t.cpa === null ? "—" : money(t.cpa)}</td>
                               <td>{t.ticket === null ? "—" : money(t.ticket)}</td>
-                              <td />
                             </tr>
                           </tfoot>
                         </table>
@@ -1052,8 +1091,11 @@ function EntryModal({
       >
         <div className="modal-title">
           <div>
-            <h2>{existing ? "Editar lançamento" : "Novo lançamento"}</h2>
-            <p>Um registro consolidado por dia.</p>
+            <h2>
+              {existing ? "Editar lançamento" : "Novo lançamento"} ·{" "}
+              {e.date.split("-").reverse().join("/")}
+            </h2>
+            <p>Altere os valores abaixo. Totais e gráficos serão recalculados ao salvar.</p>
           </div>
           <button type="button" aria-label="Fechar" onClick={close}>
             <X />

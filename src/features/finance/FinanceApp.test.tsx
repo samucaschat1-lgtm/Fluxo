@@ -90,3 +90,30 @@ it("edita saldo e retirada sem alterar lucro, preservando backup", () => {
   fireEvent.click(screen.getByRole("button", { name: "Integrações" }));
   expect(screen.getByText(/Automação ainda não ativada/)).toBeInTheDocument();
 });
+
+it("mostra cada dia e cadastra o último dia sem incluir os vazios nos totais", () => {
+  render(<FinanceApp />);
+  fireEvent.click(screen.getByRole("button", { name: "Lançamentos" }));
+  expect(screen.getAllByRole("button", { name: /^Editar dia / })).toHaveLength(22);
+  expect(screen.getAllByRole("button", { name: /^Adicionar lançamento dia / })).toHaveLength(9);
+  fireEvent.click(screen.getByRole("button", { name: "Adicionar lançamento dia 31" }));
+  const d = within(screen.getByRole("dialog", { name: "Lançamento diário" }));
+  expect(d.getByLabelText("Data", { exact: true })).toHaveValue("2026-10-31");
+  fireEvent.change(d.getByLabelText("Faturamento bruto (R$)"), { target: { value: "200" } });
+  fireEvent.click(d.getByRole("button", { name: "Salvar lançamento" }));
+  expect(screen.getByRole("button", { name: "Editar dia 31" })).toBeInTheDocument();
+  expect(screen.queryByRole("button", { name: "Adicionar lançamento dia 31" })).toBeNull();
+  expect(JSON.parse(localStorage.getItem("fluxo-financeiro-v1")!).entries).toHaveLength(23);
+});
+it("respeita fevereiro, ano bissexto e meses de 30 dias sem criar dados fictícios", () => {
+  render(<FinanceApp />);
+  fireEvent.click(screen.getByRole("button", { name: "Lançamentos" }));
+  fireEvent.change(screen.getByLabelText("Mês", { exact: true }), { target: { value: "1" } });
+  expect(screen.getAllByRole("button", { name: /^Adicionar lançamento dia / })).toHaveLength(28);
+  expect(document.body.textContent).not.toContain("NaN");
+  fireEvent.change(screen.getByLabelText("Ano", { exact: true }), { target: { value: "2028" } });
+  expect(screen.getAllByRole("button", { name: /^Adicionar lançamento dia / })).toHaveLength(29);
+  fireEvent.change(screen.getByLabelText("Mês", { exact: true }), { target: { value: "3" } });
+  expect(screen.getAllByRole("button", { name: /^Adicionar lançamento dia / })).toHaveLength(30);
+  expect(JSON.parse(localStorage.getItem("fluxo-financeiro-v1")!).entries).toHaveLength(22);
+});

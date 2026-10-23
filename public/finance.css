@@ -1187,3 +1187,89 @@ footer button {
     font-size: 9px;
   }
 }
+.month-empty-note {
+  padding: 20px;
+  border: 1px dashed #d3dfd6;
+  border-radius: 10px;
+  margin-bottom: 18px;
+}
+.month-empty-note p {
+  font-size: 12px;
+  margin-top: 7px;
+}
+.daily-table {
+  max-height: 720px;
+}
+.daily-table th:first-child,
+.daily-table td:first-child {
+  position: sticky;
+  left: 0;
+  min-width: 65px;
+  background: #fff;
+  z-index: 2;
+}
+.daily-table th:nth-child(2),
+.daily-table td:nth-child(2) {
+  position: sticky;
+  left: 65px;
+  background: #fff;
+  z-index: 2;
+  text-align: left;
+  box-shadow: 5px 0 8px -7px #789886;
+}
+.daily-table thead th:first-child,
+.daily-table thead th:nth-child(2) {
+  z-index: 4;
+  background: #f8faf9;
+}
+.daily-table tfoot td:first-child,
+.daily-table tfoot td:nth-child(2) {
+  z-index: 3;
+  background: #f6f9f7;
+}
+.day-edit,
+.day-add {
+  font-size: 11px;
+  padding: 8px 10px;
+  border: 1px solid #cfe3d7;
+  background: #edf6f0;
+  border-radius: 6px;
+  color: #16865c;
+  white-space: nowrap;
+}
+.day-add {
+  background: #fff;
+  border-style: dashed;
+  color: #64836e;
+}
+.day-edit:hover,
+.day-add:hover {
+  background: #dff1e5;
+}
+.unfilled-day {
+  background: #fafcfb;
+}
+.empty-day-label {
+  text-align: left;
+  color: #95a298;
+  font-size: 11px;
+}
+.daily-table .day-actions {
+  padding: 7px 10px;
+}
+@media (max-width: 640px) {
+  .daily-table th:first-child,
+  .daily-table td:first-child {
+    min-width: 58px;
+    padding-left: 12px;
+  }
+  .daily-table th:nth-child(2),
+  .daily-table td:nth-child(2) {
+    left: 58px;
+  }
+  .day-edit,
+  .day-add {
+    font-size: 10px;
+    padding: 8px 7px;
+  }
+}
