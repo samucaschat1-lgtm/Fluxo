@@ -201,9 +201,11 @@ export function FinanceApp() {
           fluxo<span className="brand-dot">.</span>
         </a>
         <div className="workspace">
-          <span className="workspace-icon">BA</span>
+          <span className="workspace-icon" aria-hidden="true">
+            <ChartNoAxesCombined size={17} />
+          </span>
           <div>
-            <strong>Batidas Artesanais</strong>
+            <strong>Minha operação</strong>
             <small>Operação low ticket</small>
           </div>
         </div>
@@ -243,9 +245,11 @@ export function FinanceApp() {
             <CircleHelp size={16} /> Entender os cálculos
           </button>
           <div className="avatar-row">
-            <span className="avatar">BA</span>
+            <span className="avatar" aria-hidden="true">
+              <Wallet size={16} />
+            </span>
             <div>
-              <strong>Minha operação</strong>
+              <strong>Minha conta</strong>
               <small>Controle financeiro</small>
             </div>
           </div>
