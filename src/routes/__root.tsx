@@ -83,8 +83,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     ],
     links: [
       { rel: "stylesheet", href: "/finance.css" },
-      { rel: "icon", type: "image/png", sizes: "266x266", href: "/favicon.png" },
-      { rel: "apple-touch-icon", href: "/favicon.png" },
+      // Ícone do Fluxo em tamanho aceito pelos buscadores e navegadores.
+      { rel: "icon", type: "image/png", sizes: "96x96", href: "/favicon-96.png?v=20261023" },
+      { rel: "shortcut icon", type: "image/png", href: "/favicon-96.png?v=20261023" },
+      { rel: "apple-touch-icon", href: "/favicon.png?v=20261023" },
     ],
   }),
   shellComponent: RootShell,
