@@ -1,5 +1,9 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { ReferencePage } from "@/components/reference-page";
-
-// Preserve the original privacy, terms, refund and data-deletion pages on reload.
-export const Route = createFileRoute("/$")({ component: ReferencePage });
+import { createFileRoute, Link } from "@tanstack/react-router";
+export const Route = createFileRoute("/$")({
+  component: () => (
+    <main style={{ padding: 48 }}>
+      <h1>Página não encontrada</h1>
+      <Link to="/">Voltar ao financeiro</Link>
+    </main>
+  ),
+});

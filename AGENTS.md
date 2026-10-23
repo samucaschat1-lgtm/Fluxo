@@ -9,7 +9,8 @@
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
 
-- Keep the adapted sales page at the index route with reusable presentation components; it is a single long-form product page.
-- Use the provided external checkout for purchase actions; do not simulate payment or fulfillment locally.
-- Keep offer configuration and activity illustration data in a browser-safe module so the UI does not duplicate commercial details.
-- Do not execute or embed downloaded tracking bundles; third-party tracking requires confirmed ownership and configuration.
+- The index route is now the Fluxo financial dashboard, as requested by the owner.
+- Preserve TanStack/Lovable infrastructure and Git history.
+- Calculate currency in integer cents, preserve imported historical tax/fee values, and do not fabricate missing order counts.
+- Local browser storage is not cloud sync or authentication. Keep this limitation visible.
+- API credentials must never be stored in client code.
